@@ -1,9 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Title</title>
-    </head>
-    <body>
-        Hello
-    </body>
+<head>
+    <title>Google Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<div id="container">
+    <div class="d-flex flex-row-reverse bd-highlight">
+        <div class="p-2 bd-highlight"><a href="index.html">Back to Google Search</a></div>
+    </div>
+    <br><br>
+    <div>
+        <div class="row">
+            <div class="col-12" >
+                <div class="text-column" id="advanced-search">Advanced Search</div>
+            </div>
+        </div>
+        <hr>
+        <br><br>
+        <div class="row">
+            <div class="col-2">
+                <div id="find">Find pages with...</div>
+            </div>
+            <div class="col-6"></div>
+            <div class="col-4"></div>
+        </div>
+        <br>
+        <form action="https://google.com/search">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="text-column">all these words:</div>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="q">
+                    <br>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" >
+                    <div class="text-column">this exact word or phrase:</div>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="q">
+                    <br>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" >
+                    <div class="text-column">any of these words:</div>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="q">
+                    <br>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" >
+                    <div class="text-column">none of these words:</div>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="q">
+                    <br>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-6" id="button-div">
+                    <button type="submit" class="btn btn-primary" id="advanced-button">Advanced Search</button>
+                </div>
+                <div class="col-4"></div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
 </html>
