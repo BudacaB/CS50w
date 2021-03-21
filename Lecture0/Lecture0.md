@@ -1,5 +1,7 @@
 ## HTML
 
+https://cs50.harvard.edu/web/2020/notes/0/
+
 ### DOM 
 - document object model - how HTML structures a webpage
 - tree like structure
