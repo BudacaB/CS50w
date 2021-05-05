@@ -4,6 +4,11 @@
     Encyclopedia
 {% endblock %}
 
+{% block form %}
+    {% csrf_token %}
+    {{ form }}
+{% endblock %}
+
 {% block body %}
     <h1>All Pages</h1>
 
