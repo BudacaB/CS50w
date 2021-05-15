@@ -8,6 +8,10 @@ from django.http import HttpResponseRedirect
 class NewSearchForm(forms.Form):
     search = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Search Encyclopedia'}))
 
+class NewPageForm(forms.Form):
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter title'}))
+    markdown = forms.CharField(widget=forms.Textarea(attrs={'rows':2, 'cols':15, 'placeholder': 'Enter Markdown here...'}))
+
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries(),
@@ -36,7 +40,7 @@ def search(request):
                 entries = util.list_entries()
                 filtered_entries = [k for k in entries if search in k]
                 if not filtered_entries:
-                    return render(request, "encyclopedia/search.html", {
+                    return render(request, "encyclopedia/search_error.html", {
                         "search": search,
                         "form": NewSearchForm()
                     })
@@ -47,3 +51,29 @@ def search(request):
                     })
             else:
                 return HttpResponseRedirect('/wiki/' + search)
+
+def new_page(request):
+    return render(request, "encyclopedia/new.html", {
+        "form": NewSearchForm(),
+        "new_page_form": NewPageForm()
+    })
+
+def new_page_add(request):
+    if request.method == 'POST':
+        form = NewPageForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            markdown = form.cleaned_data["markdown"]
+            if util.get_entry(title) is None:
+                util.save_entry(title, markdown)
+                return render(request, "encyclopedia/new.html", {
+                    "form": NewSearchForm(),
+                    "new_page_form": NewPageForm()
+                })
+            else:
+                return HttpResponseRedirect('/new_error/')
+
+def new_error(request):
+    return render(request, "encyclopedia/new_error.html", {
+        "form": NewSearchForm(),
+    })

@@ -1,0 +1,16 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block form %}
+    {% csrf_token %}
+    {{ form }}
+{% endblock %}
+
+{% block body %}
+    
+    <div>Page Already Exists</div>
+
+{% endblock %}
