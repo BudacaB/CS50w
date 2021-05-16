@@ -4,6 +4,7 @@ from . import util
 from markdown2 import Markdown
 from django import forms
 from django.http import HttpResponseRedirect
+import random
 
 class NewSearchForm(forms.Form):
     search = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Search Encyclopedia'}))
@@ -77,3 +78,23 @@ def new_error(request):
     return render(request, "encyclopedia/new_error.html", {
         "form": NewSearchForm(),
     })
+
+def edit(request, title):
+    markdowner = Markdown()
+    return render(request, "encyclopedia/edit.html", {
+        "title": title,
+        "content": markdowner.convert(util.get_entry(title)),
+        "form": NewSearchForm()
+    })
+
+def edit_save(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        util.save_entry(title, content)
+        return HttpResponseRedirect('/wiki/' + title)
+
+def random_page(request):
+    random_title = random.choice(util.list_entries())
+    return HttpResponseRedirect('/wiki/' + random_title)
+        
