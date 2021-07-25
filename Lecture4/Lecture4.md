@@ -123,3 +123,36 @@ SELECT first, origin, destination FROM flights JOIN passengers on passengers.fli
 - FULL OUTER JOIN
 
 ### Index
+
+```
+CREATE INDEX name_index ON passengers (last);
+```
+
+### SQL Injection
+
+- based on a web page form
+
+```
+SELECT * FROM users WHERE username = username AND password = password;
+```
+
+- input for password: hacker" --
+- in SQL '--' is the start of a comment
+
+```
+SELECT * FROM users WHERE username = "hacker"--" AND password = password;
+```
+
+- one strategy is to escape these kind of characters
+- another strategy is to use an abstraction layer on top of SQL so we don't have to write the SQL queries at all - e.g. with Django
+
+### Race conditions
+
+- multiple events happening in parallel threads for the same piece of data
+- solution e.g. - lock the database to finish a transaction
+
+### Migrations
+
+- applying changes to the database
+    - create the migration - instructions for manipulating the db (python3 manage.py makemigrations)
+    - execute that migration step (python3 manage.py migrate)
