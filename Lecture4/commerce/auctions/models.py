@@ -6,14 +6,15 @@ class User(AbstractUser):
     pass
 
 class Listing(models.Model):
-    name = models.CharField(max_length=64)
+    title = models.CharField(max_length=64)
     description = models.CharField(max_length=64)
-    price = models.FloatField()
-    category = models.CharField(max_length=64)
+    starting_bid = models.FloatField()
+    category = models.CharField(max_length=64, null=True, blank=True)
+    url = models.CharField(max_length=64, null=True, blank=True)
     listed_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
 
     def __str__(self):
-        return f"{self.name} ({self.price})"
+        return f"{self.title} ({self.starting_bid})"
 
 class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name="bid_objects")

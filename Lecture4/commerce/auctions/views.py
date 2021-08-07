@@ -1,10 +1,11 @@
+from django import urls
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import *
 
 
 def index(request):
@@ -61,3 +62,16 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+def create(request):
+    if request.method == "POST":
+        title = request.POST["title"]
+        description = request.POST["description"]
+        starting_bid = request.POST["starting_bid"]
+        url = request.POST["url"]
+        category = request.POST["category"]
+        listing = Listing(title=title, description=description, starting_bid=starting_bid, url=url, category=category, listed_by=request.user)
+        listing.save()
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "auctions/create.html")
