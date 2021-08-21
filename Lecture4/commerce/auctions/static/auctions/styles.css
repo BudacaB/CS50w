@@ -1,3 +1,21 @@
 body {
     padding: 10px;
 }
+
+img {
+    width:300px; /* you can use % */
+    height: auto;
+}
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.price{
+    font-weight: bold;
+}
+
+.created {
+    font-size: 12px;
+}
