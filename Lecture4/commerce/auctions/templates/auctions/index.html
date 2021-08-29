@@ -9,13 +9,13 @@
                     <div class="row">
                         <div class="col-3">
                             {% if listing.url %}
-                            <img src={{listing.url}} alt="listing">
+                            <img class="index_img" src={{listing.url}} alt="listing">
                             {% else %}
                                 <p>No image</p>
                             {% endif %}
                         </div>
                         <div class="col-9">
-                            <p class="title">{{listing.title}}</p>
+                            <p class="title"><a href="{% url 'listing' listing.id %}"><h2>{{listing.title}}</h2></a></p>
                             <p class="price">Price: ${{listing.starting_bid|floatformat:2}}</p>
                             <p>{{listing.description}}</p>
                             <p class="created">Created: {{listing.created}}</p>

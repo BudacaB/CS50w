@@ -18,17 +18,24 @@ class Listing(models.Model):
         return f"{self.title} ({self.starting_bid})"
 
 class Bid(models.Model):
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name="bid_objects")
-    bidder = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name="bids")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bid_objects")
+    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
     bid = models.FloatField()
 
     def __str__(self):
-        return f"{self.bidder}"
+        return f"{self.bid}"
 
 class Comment(models.Model):
     comment = models.CharField(max_length=128)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="comments")
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name="comments")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comments")
 
     def __str__(self):
-        return f"{self.user}"
+        return f"{self.comment}"
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watching")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.listing}"

@@ -77,3 +77,16 @@ def create(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/create.html")
+
+def view_listing(request, listing_id):
+    listing = Listing.objects.get(pk=listing_id)
+    if request.method == "GET":
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+        })
+    elif request.method == "POST":
+        watchlist = Watchlist(user=request.user, listing=listing)
+        watchlist.save()
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+        })
