@@ -6,11 +6,17 @@
 
 <div>
     {% if user.is_authenticated %}
-    <form action="{% url 'listing' listing.id %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-secondary btn-sm">Add to Watchlist</button>
-    </form>
-        
+        {% if watchlisted %}
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary btn-sm">Remove from Watchlist</button>
+            </form>  
+        {% else %}
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary btn-sm">Add to Watchlist</button>
+            </form>
+        {% endif %}
     {% else %}
     {% endif %}
 </div>

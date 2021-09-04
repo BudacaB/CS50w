@@ -80,13 +80,29 @@ def create(request):
 
 def view_listing(request, listing_id):
     listing = Listing.objects.get(pk=listing_id)
-    if request.method == "GET":
-        return render(request, "auctions/listing.html", {
-            "listing": listing,
-        })
+    watchlisted = Watchlist.objects.filter(listing_id = listing_id, user_id = request.user.id)
+    if request.method == "GET":  
+        if not watchlisted:     
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+            })
+        else:
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "watchlisted": watchlisted
+            })
     elif request.method == "POST":
-        watchlist = Watchlist(user=request.user, listing=listing)
-        watchlist.save()
-        return render(request, "auctions/listing.html", {
-            "listing": listing,
-        })
+        if not watchlisted:
+            watchlist = Watchlist(user=request.user, listing=listing)
+            watchlist.save()
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "watchlisted": True
+            })
+        else:
+            watchlisted[0].delete()
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+            })
+
+
