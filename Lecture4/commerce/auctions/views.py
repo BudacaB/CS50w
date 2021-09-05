@@ -79,30 +79,45 @@ def create(request):
         return render(request, "auctions/create.html")
 
 def view_listing(request, listing_id):
+    bids_count = Bid.objects.filter(listing = listing_id).count()
     listing = Listing.objects.get(pk=listing_id)
     watchlisted = Watchlist.objects.filter(listing_id = listing_id, user_id = request.user.id)
     if request.method == "GET":  
         if not watchlisted:     
             return render(request, "auctions/listing.html", {
                 "listing": listing,
+                "bids_count": bids_count
             })
         else:
             return render(request, "auctions/listing.html", {
                 "listing": listing,
-                "watchlisted": watchlisted
+                "watchlisted": watchlisted,
+                "bids_count": bids_count
             })
     elif request.method == "POST":
-        if not watchlisted:
-            watchlist = Watchlist(user=request.user, listing=listing)
-            watchlist.save()
+        bid = request.POST.get('bid', 0)
+        if bid != 0:
+            if bids_count == 0:
+                new_bid = Bid(listing=listing, bidder=request.user, bid=bid)
+                # TODO - save bid and move to other cases
             return render(request, "auctions/listing.html", {
                 "listing": listing,
-                "watchlisted": True
+                "bids_count": bids_count
             })
         else:
-            watchlisted[0].delete()
-            return render(request, "auctions/listing.html", {
-                "listing": listing,
-            })
+            if not watchlisted:
+                watchlist = Watchlist(user=request.user, listing=listing)
+                watchlist.save()
+                return render(request, "auctions/listing.html", {
+                    "listing": listing,
+                    "watchlisted": True,
+                    "bids_count": bids_count
+                })
+            else:
+                watchlisted[0].delete()
+                return render(request, "auctions/listing.html", {
+                    "listing": listing,
+                    "bids_count": bids_count
+                })
 
 
