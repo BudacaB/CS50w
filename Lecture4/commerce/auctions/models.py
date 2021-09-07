@@ -21,6 +21,7 @@ class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bid_objects")
     bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
     bid = models.FloatField()
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.bid}"
@@ -29,6 +30,7 @@ class Comment(models.Model):
     comment = models.CharField(max_length=128)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="comments")
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comments")
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.comment}"

@@ -35,7 +35,10 @@
 </div>
 
 {% if user.is_authenticated %}
-    <p>{{ bids_count }} bid(s) so far.</p>
+    <p>{{ bids_count }} bid(s) so far. {{ current_bid }}</p>
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
     <form action="{% url 'listing' listing.id %}" method="post">
         {% csrf_token %}
         <div class="form-group">
