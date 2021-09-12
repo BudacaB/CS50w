@@ -88,16 +88,22 @@ def view_listing(request, listing_id):
     elif request.method == "POST":
         return view_listing_post(request, listing, listing_id, watchlisted)
 
-
+# TODO continue new logic for closing
 def view_listing_get(request, listing, listing_id, watchlisted, listed_by):
     bids_count = Bid.objects.filter(listing = listing_id).count()
-    current_bid = Bid.objects.filter(listing = listing_id).latest('created')
-    if current_bid.bidder == request.user:  
-        if not watchlisted:   
-            return render_template(request, listing, None, bids_count, "Your bid is the current bid", None, listed_by)
+    try:
+        current_bid = Bid.objects.filter(listing = listing_id).latest('created')
+        if current_bid.bidder == request.user:  
+            if not watchlisted:   
+                return render_template(request, listing, None, bids_count, "Your bid is the current bid", None, listed_by)
+            else:
+                return render_template(request, listing, watchlisted, bids_count, "Your bid is the current bid", None, listed_by)
         else:
-            return render_template(request, listing, watchlisted, bids_count, "Your bid is the current bid", None, listed_by)
-    else:
+            if not watchlisted:    
+                return render_template(request, listing, None, bids_count, "", None, listed_by) 
+            else:
+                return render_template(request, listing, watchlisted, bids_count, "", None, listed_by)
+    except Bid.DoesNotExist:
         if not watchlisted:    
             return render_template(request, listing, None, bids_count, "", None, listed_by) 
         else:
