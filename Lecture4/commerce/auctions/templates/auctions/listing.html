@@ -9,12 +9,12 @@
         {% if watchlisted %}
             <form action="{% url 'listing' listing.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-secondary btn-sm">Remove from Watchlist</button>
+                <input class="btn btn-secondary btn-sm" type="submit" name="action" value="Remove from Watchlist">
             </form>  
         {% else %}
             <form action="{% url 'listing' listing.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-secondary btn-sm">Add to Watchlist</button>
+                <input class="btn btn-secondary btn-sm" type="submit" name="action" value="Watchlist">
             </form>
         {% endif %}
     {% else %}
@@ -39,7 +39,7 @@
     {% if listed_by %}
         <form action="{% url 'listing' listing.id %}" method="post">
             {% csrf_token %}
-            <input class="btn btn-danger" type="submit" value="Close">
+            <input class="btn btn-danger" type="submit" name="action" value="Close">
         </form>
     {% else %}
         {% if message %}
@@ -48,9 +48,9 @@
         <form action="{% url 'listing' listing.id %}" method="post">
             {% csrf_token %}
             <div class="form-group">
-                <input class="form-control" type="number" step="0.01" min=0.01 name="bid" placeholder="Bid">
+                <input class="form-control" type="number" step="0.01" min="0.01" name="bid" placeholder="Bid" required>
             </div>
-            <input class="btn btn-primary" type="submit" value="Place Bid">
+            <input class="btn btn-primary" type="submit" name="action" value="Place Bid">
         </form>
     {% endif %}
 {% endif %}
