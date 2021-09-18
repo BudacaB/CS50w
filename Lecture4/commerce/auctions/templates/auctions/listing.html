@@ -74,5 +74,29 @@
     {% endif %}
 </ul>
 
+{% if user.is_authenticated %}
+    <h5>Comments</h5>
+    <form action="{% url 'listing' listing.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" type="test" name="comment" placeholder="Leave a comment" required>
+        </div>
+        <input class="btn btn-info btn-sm" type="submit" name="action" value="Post Comment">
+    </form>
+    <br>
+    {% for comment in comments %}
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <p>{{comment.comment}}</p>
+                        <p class="comment_details">{{comment.user}} on {{comment.created}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+{% endif %}
 
 {% endblock %}

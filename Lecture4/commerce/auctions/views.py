@@ -125,6 +125,8 @@ def view_listing_post(request, listing, listing_id, watchlisted, listed_by):
             return close(request, listing, watchlisted, bids_count, listed_by)
         elif request.POST['action'] == 'Place Bid':
             return bidding(request, listing, listing_id, watchlisted, current_bid, bids_count, listed_by)
+        elif request.POST['action'] == 'Post Comment':
+            return comment(request, listing, listing_id, watchlisted, listed_by)
     except Bid.DoesNotExist:
         dummy_user = User()
         current_bid = Bid(listing=listing, bidder=dummy_user, bid=0)
@@ -136,6 +138,8 @@ def view_listing_post(request, listing, listing_id, watchlisted, listed_by):
             return close(request, listing, watchlisted, bids_count, listed_by)
         elif request.POST['action'] == 'Place Bid':
             return bidding(request, listing, listing_id, watchlisted, current_bid, bids_count, listed_by)
+        elif request.POST['action'] == 'Post Comment':
+            return comment(request, listing, listing_id, watchlisted, listed_by)
 
 def watchlist(request, listing, bids_count, current_bid, listed_by):
     watchlist_create = Watchlist(user=request.user, listing=listing)
@@ -185,6 +189,12 @@ def close(request, listing, watchlisted, bids_count, listed_by):
     else:
         return render_template(request, listing, None, bids_count, "", None, listed_by)
 
+def comment(request, listing, listing_id, watchlisted, listed_by):
+    comment = request.POST.get('comment')
+    new_comment = Comment(comment=comment, user=request.user, listing=listing)
+    new_comment.save()
+    return view_listing_get(request, listing, listing_id, watchlisted, listed_by)
+
 def render_template(request, listing, watchlisted, bids_count, current_bid, message, listed_by):
     return render(request, "auctions/listing.html", {
         "listing": listing,
@@ -192,5 +202,6 @@ def render_template(request, listing, watchlisted, bids_count, current_bid, mess
         "bids_count": bids_count,
         "current_bid": current_bid,
         "message": message,
-        "listed_by": listed_by
+        "listed_by": listed_by,
+        "comments": Comment.objects.filter(listing = listing).order_by('-created')
     })
