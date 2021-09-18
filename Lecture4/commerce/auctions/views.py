@@ -10,7 +10,7 @@ from .models import *
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "listings": Listing.objects.all()
+        "listings": Listing.objects.exclude(active=False)
     })
 
 
@@ -92,30 +92,26 @@ def view_listing_get(request, listing, listing_id, watchlisted, listed_by):
     try:
         current_bid = Bid.objects.filter(listing = listing_id).latest('created')
         if current_bid.bidder == request.user:  
-            if not watchlisted:   
-                return render_template(request, listing, None, bids_count, "Your bid is the current bid", None, None)
+            if listing.active:
+                if watchlisted:   
+                    return render_template(request, listing, watchlisted, bids_count, "Your bid is the current bid", None, None)
+                else:
+                    return render_template(request, listing, None, bids_count, "Your bid is the current bid", None, None)
             else:
-                return render_template(request, listing, watchlisted, bids_count, "Your bid is the current bid", None, None)
+                if watchlisted:   
+                    return render_template(request, listing, watchlisted, bids_count, "Your won the bid!", None, None)
+                else:
+                    return render_template(request, listing, None, bids_count, "Your won the bid!", None, None)
         else:
-            if not watchlisted:    
-                return render_template(request, listing, None, bids_count, "", None, listed_by) 
+            if watchlisted:    
+                return render_template(request, listing, watchlisted, bids_count, "", None, listed_by) 
             else:
-                return render_template(request, listing, watchlisted, bids_count, "", None, listed_by)
+                return render_template(request, listing, None, bids_count, "", None, listed_by)
     except Bid.DoesNotExist:
         if not watchlisted:    
             return render_template(request, listing, None, bids_count, "", None, listed_by) 
         else:
             return render_template(request, listing, watchlisted, bids_count, "", None, listed_by)
-                
-def render_template(request, listing, watchlisted, bids_count, current_bid, message, listed_by):
-    return render(request, "auctions/listing.html", {
-        "listing": listing,
-        "watchlisted": watchlisted,
-        "bids_count": bids_count,
-        "current_bid": current_bid,
-        "message": message,
-        "listed_by": listed_by
-    })
 
 def view_listing_post(request, listing, listing_id, watchlisted, listed_by):
     bids_count = Bid.objects.filter(listing = listing_id).count()
@@ -126,10 +122,9 @@ def view_listing_post(request, listing, listing_id, watchlisted, listed_by):
         elif request.POST['action'] == 'Remove from Watchlist':
             return remove_from_watchlist(request, listing, watchlisted, bids_count, listing_id, current_bid, listed_by)
         elif request.POST['action'] == 'Close':
-            # TODO
-            pass
+            return close(request, listing, watchlisted, bids_count, listed_by)
         elif request.POST['action'] == 'Place Bid':
-            return bidding(request, listing, listing_id, current_bid, bids_count, listed_by)
+            return bidding(request, listing, listing_id, watchlisted, current_bid, bids_count, listed_by)
     except Bid.DoesNotExist:
         dummy_user = User()
         current_bid = Bid(listing=listing, bidder=dummy_user, bid=0)
@@ -138,10 +133,9 @@ def view_listing_post(request, listing, listing_id, watchlisted, listed_by):
         elif request.POST['action'] == 'Remove from Watchlist':
             return remove_from_watchlist(request, listing, watchlisted, bids_count, listing_id, current_bid, listed_by)
         elif request.POST['action'] == 'Close':
-            # TODO
-            pass
+            return close(request, listing, watchlisted, bids_count, listed_by)
         elif request.POST['action'] == 'Place Bid':
-            return bidding(request, listing, listing_id, current_bid, bids_count, listed_by)
+            return bidding(request, listing, listing_id, watchlisted, current_bid, bids_count, listed_by)
 
 def watchlist(request, listing, bids_count, current_bid, listed_by):
     watchlist_create = Watchlist(user=request.user, listing=listing)
@@ -151,14 +145,14 @@ def watchlist(request, listing, bids_count, current_bid, listed_by):
     else:
         return render_template(request, listing, True, bids_count, "", None, listed_by)
 
-def remove_from_watchlist(request, listing, watchlisted, bids_count, listing_id, current_bid, listed_by):
+def remove_from_watchlist(request, listing, watchlisted, bids_count, current_bid, listed_by):
     watchlisted[0].delete()
     if current_bid.bidder == request.user:
         return render_template(request, listing, None, bids_count, "Your bid is the current bid", None, None)
     else:
         return render_template(request, listing, None, bids_count, "", None, listed_by)
 
-def bidding(request, listing, listing_id, current_bid, bids_count, listed_by):
+def bidding(request, listing, listing_id, watchlisted, current_bid, bids_count, listed_by):
     bid = request.POST.get('bid')
     if float(bid) >= listing.starting_bid and float(bid) > current_bid.bid:
         new_bid = Bid(listing=listing, bidder=request.user, bid=bid)
@@ -168,7 +162,35 @@ def bidding(request, listing, listing_id, current_bid, bids_count, listed_by):
         bids_count = Bid.objects.filter(listing = listing_id).count()
         current_bid = Bid.objects.filter(listing = listing_id).latest('created')
         if current_bid.bidder == request.user:
-            return render_template(request, listing, None, bids_count, "Your bid is the current bid", None, None)
-        return render_template(request, listing, None, bids_count, "", None, listed_by)
+            if watchlisted:
+                return render_template(request, listing, watchlisted, bids_count, "Your bid is the current bid", None, None)
+            else:
+                return render_template(request, listing, None, bids_count, "Your bid is the current bid", None, None)
+        if watchlisted:
+            return render_template(request, listing, watchlisted, bids_count, "", None, listed_by)
+        else:
+            return render_template(request, listing, None, bids_count, "", None, listed_by)
     elif float(bid) < listing.starting_bid or float(bid) <= current_bid.bid:
-        return render_template(request, listing, None, bids_count, "", "The bid must be at least as large as the starting bid, and must be greater than any other bids that have been placed (if any).", None)
+        if watchlisted:
+            return render_template(request, listing, watchlisted, bids_count, "", "The bid must be at least as large as the starting bid, and must be greater than any other bids that have been placed (if any).", None)
+        else:
+            return render_template(request, listing, None, bids_count, "", "The bid must be at least as large as the starting bid, and must be greater than any other bids that have been placed (if any).", None)
+
+
+def close(request, listing, watchlisted, bids_count, listed_by):
+    listing.active = False
+    listing.save()
+    if watchlisted:
+        return render_template(request, listing, watchlisted, bids_count, "", None, listed_by)
+    else:
+        return render_template(request, listing, None, bids_count, "", None, listed_by)
+
+def render_template(request, listing, watchlisted, bids_count, current_bid, message, listed_by):
+    return render(request, "auctions/listing.html", {
+        "listing": listing,
+        "watchlisted": watchlisted,
+        "bids_count": bids_count,
+        "current_bid": current_bid,
+        "message": message,
+        "listed_by": listed_by
+    })

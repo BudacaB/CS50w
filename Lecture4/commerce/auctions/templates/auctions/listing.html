@@ -37,21 +37,29 @@
 {% if user.is_authenticated %}
     <p>{{ bids_count }} bid(s) so far. {{ current_bid }}</p>
     {% if listed_by %}
-        <form action="{% url 'listing' listing.id %}" method="post">
-            {% csrf_token %}
-            <input class="btn btn-danger" type="submit" name="action" value="Close">
-        </form>
-    {% else %}
-        {% if message %}
-            <div>{{ message }}</div>
+        {% if listing.active %}
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <input class="btn btn-danger" type="submit" name="action" value="Close">
+            </form>
+        {% else %}
+            <p>You closed the bidding</p>
         {% endif %}
-        <form action="{% url 'listing' listing.id %}" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <input class="form-control" type="number" step="0.01" min="0.01" name="bid" placeholder="Bid" required>
-            </div>
-            <input class="btn btn-primary" type="submit" name="action" value="Place Bid">
-        </form>
+    {% else %}
+        {% if listing.active %}
+            {% if message %}
+                <div>{{ message }}</div>
+            {% endif %}
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-control" type="number" step="0.01" min="0.01" name="bid" placeholder="Bid" required>
+                </div>
+                <input class="btn btn-primary" type="submit" name="action" value="Place Bid">
+            </form>
+        {% else %}
+            <p>Bidding is closed.</p>
+        {% endif %}
     {% endif %}
 {% endif %}
 
