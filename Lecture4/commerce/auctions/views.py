@@ -212,6 +212,5 @@ def watchlist(request):
         for listing in Listing.objects.filter(id = watchlisted_listing.listing_id):
             watchlisted.add(listing)
     return render(request, "auctions/watchlist.html", {
-        # "watchlist": Watchlist.objects.filter(user = request.user)
         "watchlisted": watchlisted
-    }) 
+    })
