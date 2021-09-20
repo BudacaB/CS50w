@@ -118,9 +118,9 @@ def view_listing_post(request, listing, listing_id, watchlisted, listed_by):
     try:
         current_bid = Bid.objects.filter(listing = listing_id).latest('created')
         if request.POST['action'] == 'Watchlist':
-            return watchlist(request, listing, bids_count, current_bid, listed_by)
+            return add_to_watchlist(request, listing, bids_count, current_bid, listed_by)
         elif request.POST['action'] == 'Remove from Watchlist':
-            return remove_from_watchlist(request, listing, watchlisted, bids_count, listing_id, current_bid, listed_by)
+            return remove_from_watchlist(request, listing, watchlisted, bids_count, current_bid, listed_by)
         elif request.POST['action'] == 'Close':
             return close(request, listing, watchlisted, bids_count, listed_by)
         elif request.POST['action'] == 'Place Bid':
@@ -131,9 +131,9 @@ def view_listing_post(request, listing, listing_id, watchlisted, listed_by):
         dummy_user = User()
         current_bid = Bid(listing=listing, bidder=dummy_user, bid=0)
         if request.POST['action'] == 'Watchlist':
-            return watchlist(request, listing, bids_count, current_bid, listed_by)
+            return add_to_watchlist(request, listing, bids_count, current_bid, listed_by)
         elif request.POST['action'] == 'Remove from Watchlist':
-            return remove_from_watchlist(request, listing, watchlisted, bids_count, listing_id, current_bid, listed_by)
+            return remove_from_watchlist(request, listing, watchlisted, bids_count, current_bid, listed_by)
         elif request.POST['action'] == 'Close':
             return close(request, listing, watchlisted, bids_count, listed_by)
         elif request.POST['action'] == 'Place Bid':
@@ -141,7 +141,7 @@ def view_listing_post(request, listing, listing_id, watchlisted, listed_by):
         elif request.POST['action'] == 'Post Comment':
             return comment(request, listing, listing_id, watchlisted, listed_by)
 
-def watchlist(request, listing, bids_count, current_bid, listed_by):
+def add_to_watchlist(request, listing, bids_count, current_bid, listed_by):
     watchlist_create = Watchlist(user=request.user, listing=listing)
     watchlist_create.save()
     if current_bid.bidder == request.user:
@@ -205,3 +205,13 @@ def render_template(request, listing, watchlisted, bids_count, current_bid, mess
         "listed_by": listed_by,
         "comments": Comment.objects.filter(listing = listing).order_by('-created')
     })
+
+def watchlist(request):
+    watchlisted = set()
+    for watchlisted_listing in request.user.watching.all():
+        for listing in Listing.objects.filter(id = watchlisted_listing.listing_id):
+            watchlisted.add(listing)
+    return render(request, "auctions/watchlist.html", {
+        # "watchlist": Watchlist.objects.filter(user = request.user)
+        "watchlisted": watchlisted
+    }) 
