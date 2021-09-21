@@ -7,14 +7,14 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-4">
                             {% if listing.url %}
                             <img class="index_img" src={{listing.url}} alt="listing">
                             {% else %}
                                 <p>No image</p>
                             {% endif %}
                         </div>
-                        <div class="col-9">
+                        <div class="col-8">
                             <p class="title"><a href="{% url 'listing' listing.id %}"><h2>{{listing.title}}</h2></a></p>
                             <p class="price">Price: ${{listing.starting_bid|floatformat:2}}</p>
                             <p>{{listing.description}}</p>

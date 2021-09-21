@@ -3,7 +3,7 @@ body {
 }
 
 .index_img {
-    width:300px; /* you can use % */
+    width:100%; /* you can use % */
     height: auto;
 }
 
@@ -24,6 +24,15 @@ body {
     font-size: 12px;
 }
 
-.comment_details{
+.comment_details {
     font-size: 10px;
+}
+
+.counter {
+    display: inline;
+    background-color: gray;
+    color: white;
+    border: solid gray 1px;
+    margin-left: 2px;
+    font-size: 15px;
 }
