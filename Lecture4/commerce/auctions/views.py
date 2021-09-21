@@ -207,7 +207,6 @@ def render_template(request, listing, watchlisted, bids_count, current_bid, mess
     })
 
 def watchlist(request):
-    print(request.user.watching)
     watchlisted = set()
     for watchlisted_listing in request.user.watching.all():
         for listing in Listing.objects.filter(id = watchlisted_listing.listing_id):
