@@ -1,12 +1,12 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    {% for category in categories %}
+    {% for listing in listings %}
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <a href="{% url 'category' category %}">{{ category }}</a>
+                        <a href="{% url 'listing' listing.id %}">{{ listing }}</a>
                     </div>
                 </div>
             </div>
