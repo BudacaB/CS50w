@@ -99,9 +99,9 @@ def view_listing_get(request, listing, listing_id, watchlisted, listed_by):
                     return render_template(request, listing, None, bids_count, "Your bid is the current bid", None, None)
             else:
                 if watchlisted:   
-                    return render_template(request, listing, watchlisted, bids_count, "Your won the bid!", None, None)
+                    return render_template(request, listing, watchlisted, bids_count, "You won the bid!", None, None)
                 else:
-                    return render_template(request, listing, None, bids_count, "Your won the bid!", None, None)
+                    return render_template(request, listing, None, bids_count, "You won the bid!", None, None)
         else:
             if watchlisted:    
                 return render_template(request, listing, watchlisted, bids_count, "", None, listed_by) 
@@ -226,5 +226,5 @@ def categories(request):
 
 def category(request, category):
     return render(request, "auctions/category.html", {
-        "listings": Listing.objects.filter(category=category)
+        "listings": Listing.objects.filter(category=category).exclude(active=False)
     })

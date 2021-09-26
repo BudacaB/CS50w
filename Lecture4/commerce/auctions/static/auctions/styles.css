@@ -16,6 +16,10 @@ body {
     font-weight: bold;
 }
 
+.title_anchor {
+    color: black;
+}
+
 .price{
     font-weight: bold;
 }
