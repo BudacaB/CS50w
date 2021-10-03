@@ -218,8 +218,9 @@ def watchlist(request):
 def categories(request):
     categories = set()
     listings = Listing.objects.exclude(category__isnull=True)
-    for listings in listings:
-        categories.add(listings.category)
+    for listing in listings:
+        if listing.category:
+            categories.add(listing.category)
     return render(request, "auctions/categories.html", {
         "categories": categories
     })
