@@ -5,16 +5,32 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
 
-                fetch('http://api.exchangeratesapi.io/v1/latest?access_key=596bfc1ce47e97e9a1d0687d5045dc04&format=1')
-                .then(response => response.json())
-                .then(data => {
-                    let rate = data.rates.USD;
-                    document.querySelector('body').innerHTML = `1 EUR is equal to ${rate.toFixed(3)} USD`;
-                });
+                document.querySelector('form').onsubmit = function() {
+
+                    fetch('http://api.exchangeratesapi.io/v1/latest?access_key=596bfc1ce47e97e9a1d0687d5045dc04&format=1')
+                    .then(response => response.json())
+                    .then(data => {
+                        const currency = document.querySelector('#currency').value.toUpperCase();
+                        const rate = data.rates[currency];
+                        if (rate !== undefined) {
+                            document.querySelector('#result').innerHTML = `1 EUR is equal to ${rate.toFixed(3)} ${currency}.`;
+                        } else {
+                            document.querySelector('#result').innerHTML = 'Invalid currency';
+                        }
+                    })
+                    .catch(error => console.log('Error', error));
+
+                    return false;
+                }
+
             });
         </script>
     </head>
     <body>
-        
+        <form>
+            <input id="currency" placeholder="Currency" type="text">
+            <input type="submit" value="Convert">
+        </form>
+        <div id="result"></div>
     </body>
 </html>
