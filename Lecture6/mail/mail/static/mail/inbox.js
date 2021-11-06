@@ -21,6 +21,7 @@ function compose_email() {
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
 
+  // POST the email
   document.querySelector('form').onsubmit = function() {
     const recipients = document.querySelector('#compose-recipients').value
     const subject = document.querySelector('#compose-subject').value
@@ -60,4 +61,18 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+  fetch(`/emails/${mailbox}`)
+  .then(response => response.json())
+  .then(result => {
+    result.forEach(element => {
+      console.log(element);
+      const mail = document.createElement('div');
+      mail.setAttribute('id', 'mail');
+      mail.innerHTML = `<b>${element.sender}</b> &nbsp ${element.subject} <span id="timestamp">${element.timestamp}<span>`;
+      document.querySelector('#emails-view').append(mail);
+    });
+  });
+
+
 }

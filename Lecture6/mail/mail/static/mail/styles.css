@@ -5,3 +5,13 @@ textarea {
 .send {
     color: red;
 }
+
+#mail {
+    border-style: solid;
+    border-width: thin;
+    padding: 5px;
+}
+
+#timestamp {
+    
+}
