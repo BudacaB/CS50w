@@ -15,11 +15,41 @@ function compose_email() {
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
-
+  
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
+
+  document.querySelector('form').onsubmit = function() {
+    const recipients = document.querySelector('#compose-recipients').value
+    const subject = document.querySelector('#compose-subject').value
+    const body = document.querySelector('#compose-body').value
+    
+    fetch('/emails', {
+      method: 'POST',
+      body: JSON.stringify({
+          recipients: recipients,
+          subject: subject,
+          body: body
+      })
+    })
+    .then(response => {
+      if (response.status === 201) {
+        load_mailbox('sent');
+      } else if (response.status === 400) {
+        document.querySelector('#compose-recipients').value = 'This user does not exist';
+        document.querySelector('#compose-recipients').className = 'form-control send';
+        document.querySelector('#compose-recipients').addEventListener('click', function resetInput() {
+          compose_email();
+          document.querySelector('#compose-recipients').className = 'form-control';
+          this.removeEventListener('click', resetInput);
+        });
+      }
+    })
+    .catch(error => console.log('Error', error));
+    return false;
+  }
 }
 
 function load_mailbox(mailbox) {
