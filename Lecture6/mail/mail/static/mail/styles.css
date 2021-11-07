@@ -2,16 +2,29 @@ textarea {
     min-height: 400px;
 }
 
+#emails-view {
+    padding-bottom: 10px;
+}
+
 .send {
     color: red;
 }
 
-#mail {
+.mail {
     border-style: solid;
     border-width: thin;
     padding: 5px;
+    position: relative;
+    cursor: pointer;
 }
 
-#timestamp {
-    
+.timestamp {
+    color: rgb(95, 95, 95);
+    position: absolute;
+    right: 0px;
+    padding-right: 5px;
+}
+
+.read {
+    background-color: rgb(226, 226, 226);
 }
