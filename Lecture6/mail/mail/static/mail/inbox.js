@@ -130,6 +130,10 @@ function view_email(email_id, mailbox) {
       unarchiveEmail(email_id);
       this.removeEventListener('click', unarchive);
     })
+  } else {
+    replyButton.style.display = 'none';
+    archiveButton.style.display = 'none';
+    unarchiveButton.style.display = 'none';
   }
 }
 
