@@ -1,19 +1,12 @@
 name: Testing
-
-on:
-  push:
-    branches: [ master ]
+on: push
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
     steps:
     - uses: actions/checkout@v2
     - name: Run Django unit tests
       run: |
-        python install --django
-        python manage.py test
+        pip3 install --django
+        python3 manage.py test
