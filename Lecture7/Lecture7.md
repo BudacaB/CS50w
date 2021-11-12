@@ -17,3 +17,11 @@ triple "s in python -> doc string
 - assertIn
 - assertNotIn
 - ...
+
+### CI/CD
+
+- CI - Continuous Integration
+    - frequent merges to main branch
+    - automated unit testing
+- CD - Continuous Delivery
+    - short release schedules
