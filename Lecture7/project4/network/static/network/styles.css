@@ -1,0 +1,8 @@
+body {
+    padding: 10px;
+}
+
+#new_post {
+    border: solid gray 1px;
+    padding: 20px;
+}
