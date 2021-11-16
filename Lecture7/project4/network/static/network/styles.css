@@ -7,3 +7,22 @@
     padding: 20px;
     margin-bottom: 10px;
 }
+
+.post {
+    margin-bottom: 15px;
+}
+
+.heart {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 25px;
+    margin: 0;
+    padding: 0;
+    font-size: 22px;
+    padding-right: 7.2px;
+}
+
+.red_heart {
+    padding-right: 0 !important;
+}

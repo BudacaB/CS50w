@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.http import JsonResponse
 
 from .models import Post, User
 
@@ -14,10 +15,13 @@ def index(request):
         post.save()
         return HttpResponseRedirect(reverse("index"))
     else:
-        posts = Post.objects.all()
-        return render(request, "network/index.html", {
-            "posts": posts
-        })
+        return render(request, "network/index.html")
+        # posts = Post.objects.all()
+        # posts = Post.objects.all().order_by("-created").all()
+        # return JsonResponse([post.serialize() for post in posts], safe=False)
+        # return render(request, "network/index.html", {
+        #     "posts": posts
+        # })
 
 
 def login_view(request):
@@ -70,3 +74,7 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+def all_posts(request):
+    posts = Post.objects.all().order_by("-created").all()
+    return JsonResponse([post.serialize() for post in posts], safe=False)
