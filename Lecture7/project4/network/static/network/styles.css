@@ -14,15 +14,12 @@
 
 .heart {
     background-color: transparent;
-    border: none;
-    outline: none;
-    /* font-size: 25px;
-    margin: 0;
-    padding: 0;
-    font-size: 22px;
-    padding-right: 7.2px; */
+    border: none !important;
+    outline: none !important;
+    font-size: 250%;
+    color: grey;
 }
 
 .red_heart {
-    padding-right: 0 !important;
+    color: red;
 }
