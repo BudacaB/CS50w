@@ -78,3 +78,6 @@ def register(request):
 def all_posts(request):
     posts = Post.objects.all().order_by("-created").all()
     return JsonResponse([post.serialize() for post in posts], safe=False)
+
+def profile(request):
+    return render(request, "network/profile.html")

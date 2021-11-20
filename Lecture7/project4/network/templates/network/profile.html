@@ -1,0 +1,18 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+    <h2>{{ user.username }}</h2>
+
+    {% if user.profile.followers == "" %}
+        <div><span>Followers: 0</span>  
+    {% else %}
+        <div><span>Followers: {{ user.profile.followers }}</span> 
+    {% endif %}
+    {% if user.profile.following == "" %}
+        <div><span>Following: 0</span>
+    {% else %}
+        <div><span>Following: {{ user.profile.following }}</span> 
+    {% endif %}
+
+{% endblock %}
