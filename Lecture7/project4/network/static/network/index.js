@@ -18,11 +18,12 @@ function getPosts() {
                                 <p>${element.post}</p>
                                 <p>${element.created}</p>
                                 <button class="heart" onclick="clicked(this)" id="${element.user}${element.id}">&hearts;</button>
-                                <span>${element.likes} likes</span>
+                                <span>${element.likes}</span>
                             </div>
                         </div>
                     </div>
                 </div>`
+            // add listener upon creation so on click will fire on the first click
             const button = document.querySelector(`#${element.user}${element.id}`);
             button.addEventListener('click', clicked);
         });
@@ -31,7 +32,6 @@ function getPosts() {
 }
 
 function clicked(elem) {
-    const like = elem.textContent;
     if (elem.className == 'heart') {
         elem.className = 'heart red_heart';
     } else {
