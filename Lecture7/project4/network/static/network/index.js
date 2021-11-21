@@ -6,7 +6,7 @@ function getPosts() {
     fetch('/all_posts')
     .then(response => response.json())
     .then(result => {
-        console.log(result)
+        console.log(result);
         const postsDiv = document.querySelector('#posts');
         result.forEach(element => {
             postsDiv.innerHTML += 
@@ -14,7 +14,7 @@ function getPosts() {
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <h5>${element.user}</h5>
+                                <h5><a href="/profile/${element.user}">${element.user}</a></h5>
                                 <p>${element.post}</p>
                                 <p>${element.created}</p>
                                 <button class="heart" onclick="clicked(this)" id="${element.user}${element.id}">&hearts;</button>

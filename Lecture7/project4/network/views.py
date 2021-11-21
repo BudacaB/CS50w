@@ -16,12 +16,6 @@ def index(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/index.html")
-        # posts = Post.objects.all()
-        # posts = Post.objects.all().order_by("-created").all()
-        # return JsonResponse([post.serialize() for post in posts], safe=False)
-        # return render(request, "network/index.html", {
-        #     "posts": posts
-        # })
 
 
 def login_view(request):
@@ -79,5 +73,9 @@ def all_posts(request):
     posts = Post.objects.all().order_by("-created").all()
     return JsonResponse([post.serialize() for post in posts], safe=False)
 
-def profile(request):
-    return render(request, "network/profile.html")
+def profile(request, username):
+    user = User.objects.get(username = username)
+    user_posts = Post.objects.all().filter(user = user).order_by("-created").all()
+    return render(request, "network/profile.html", {
+        "user_posts": user_posts
+    })
