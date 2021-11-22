@@ -10,7 +10,6 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
-    followers = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")

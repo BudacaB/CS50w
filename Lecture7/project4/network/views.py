@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 
 from .models import Post, User
 
@@ -73,9 +75,16 @@ def all_posts(request):
     posts = Post.objects.all().order_by("-created").all()
     return JsonResponse([post.serialize() for post in posts], safe=False)
 
+@login_required(login_url=reverse_lazy("login"))
 def profile(request, username):
     user = User.objects.get(username = username)
-    user_posts = Post.objects.all().filter(user = user).order_by("-created").all()
-    return render(request, "network/profile.html", {
-        "user_posts": user_posts
-    })
+    if request.method == "POST":
+        pass
+    else:
+        request_user = request.user == user
+        user_posts = Post.objects.all().filter(user = user).order_by("-created").all()
+        return render(request, "network/profile.html", {
+            "username": user.username,
+            "request_user": request_user,
+            "user_posts": user_posts
+        })
