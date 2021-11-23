@@ -1,13 +1,13 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 
-from .models import Post, User
+from .models import Post, Profile, User
 
 
 def index(request):
@@ -77,14 +77,31 @@ def all_posts(request):
 
 @login_required(login_url=reverse_lazy("login"))
 def profile(request, username):
+    following = None
     user = User.objects.get(username = username)
+    request_user = request.user == user
+    user_posts = Post.objects.all().filter(user = user).order_by("-created").all()
     if request.method == "POST":
-        pass
+        if request.POST['action'] == 'Follow':
+            profile = Profile(user = request.user, following = user)
+            profile.save()
+            return render(request, "network/profile.html", {
+                "username": user.username,
+                "request_user": request_user,
+                "user_posts": user_posts,
+                "following": True
+            })
+        elif request.POST['action'] == 'Unfollow':
+            pass
     else:
-        request_user = request.user == user
-        user_posts = Post.objects.all().filter(user = user).order_by("-created").all()
+        if ((not request_user and not Profile.objects.filter(user = request.user)) or
+        (not request_user and request.user.profile not in user.followers.all())):
+            following = False
+        else:
+            following = True
         return render(request, "network/profile.html", {
             "username": user.username,
             "request_user": request_user,
-            "user_posts": user_posts
+            "user_posts": user_posts,
+            "following": following
         })
