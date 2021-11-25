@@ -32,7 +32,8 @@
                         <h5><a href="/profile/{{post.user}}">{{post.user}}</a></h5>
                         <p>{{post.post}}</p>
                         <p>{{post.created}}</p>
-                        <span>{{post.likes}} Likes</span>
+                        <button class="heart" onclick="clicked(this)" id="{{post.user}}{{post.id}}">&hearts;</button>
+                        <span>{{post.likes}}</span>
                     </div>
                 </div>
             </div>
@@ -40,4 +41,8 @@
         <br>
     {% endfor %}
 
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/profile.js' %}"></script>
 {% endblock %}
