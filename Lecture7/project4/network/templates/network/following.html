@@ -1,0 +1,29 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <h2>Following</h2>
+
+    {% for post in posts %}
+        <div class="card post">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h5><a href="/profile/{{post.user}}">{{post.user}}</a></h5>
+                        <p>{{post.post}}</p>
+                        <p>{{post.created}}</p>
+                        <button class="heart" onclick="clicked(this)" id="{{post.user}}{{post.id}}">&hearts;</button>
+                        <span>{{post.likes}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/profile.js' %}"></script>
+{% endblock %}

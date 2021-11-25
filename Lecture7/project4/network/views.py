@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
+from operator import attrgetter
 
 from .models import Post, Profile, User
 
@@ -114,3 +115,15 @@ def profile(request, username):
             "user_posts": user_posts,
             "following": following
         })
+
+def following(request):
+    posts = list()
+    following = request.user.following.all()
+    for followed_user in following:
+        print(followed_user.following)
+        for post in Post.objects.all().filter(user = followed_user.following).order_by("-created").all():
+            posts.append(post)
+    posts.sort(key = attrgetter('created'), reverse = True)
+    return render(request, "network/following.html", {
+        "posts": posts
+    })
