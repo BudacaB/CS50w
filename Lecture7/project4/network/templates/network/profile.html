@@ -21,16 +21,8 @@
         {% endif %}
     {% endif %}
 
-    {% if user.profile.followers == "" %}
-        <div><span>Followers: 0</span>  
-    {% else %}
-        <div><span>Followers: {{ user.profile.followers }}</span> 
-    {% endif %}
-    {% if user.profile.following == "" %}
-        <div><span>Following: 0</span>
-    {% else %}
-        <div><span>Following: {{ user.profile.following }}</span> 
-    {% endif %}
+    <div><span>Followers: {{ followers_count }}</span> 
+    <div><span>Following: {{ following_count }}</span> 
 
     {% for post in user_posts %}
         <div class="card post">

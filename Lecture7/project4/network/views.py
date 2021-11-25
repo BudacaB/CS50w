@@ -79,28 +79,37 @@ def all_posts(request):
 def profile(request, username):
     following = None
     user = User.objects.get(username = username)
+    followers_count = user.followers.count()
+    following_count = user.following.count() 
     request_user = request.user == user
     user_posts = Post.objects.all().filter(user = user).order_by("-created").all()
     if request.method == "POST":
         if request.POST['action'] == 'Follow':
-            profile = Profile(user = request.user, following = user)
+            profile = Profile(follower = request.user, following = user)
             profile.save()
-            return render(request, "network/profile.html", {
-                "username": user.username,
-                "request_user": request_user,
-                "user_posts": user_posts,
-                "following": True
-            })
+            followers_count = user.followers.count()
+            following = True
         elif request.POST['action'] == 'Unfollow':
-            pass
+            Profile.objects.filter(follower = request.user, following = user).delete()
+            followers_count = user.followers.count()
+            following = False
+        return render(request, "network/profile.html", {
+            "username": user.username,
+            "followers_count": followers_count,
+            "following_count": following_count,
+            "request_user": request_user,
+            "user_posts": user_posts,
+            "following": following
+        })
     else:
-        if ((not request_user and not Profile.objects.filter(user = request.user)) or
-        (not request_user and request.user.profile not in user.followers.all())):
+        if (not request_user and not Profile.objects.filter(follower = request.user, following = user)):
             following = False
         else:
             following = True
         return render(request, "network/profile.html", {
             "username": user.username,
+            "followers_count": followers_count,
+            "following_count": following_count,
             "request_user": request_user,
             "user_posts": user_posts,
             "following": following

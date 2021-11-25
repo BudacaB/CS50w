@@ -3,16 +3,18 @@
 
 {% block body %}
     <h2>All Posts</h2>
-    <div id="new_post">
-        <h5>New Post</h5>
-        <form action="{% url 'index' %}" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <textarea class="form-control" name="post" rows="2"></textarea>
-            </div>
-            <input class="btn btn-primary" type="submit" value="Post">
-        </form>
-    </div>
+    {% if user.is_authenticated %}
+        <div id="new_post">
+            <h5>New Post</h5>
+            <form action="{% url 'index' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea class="form-control" name="post" rows="2"></textarea>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Post">
+            </form>
+        </div>
+    {% endif %}
 
     <div id="posts">
     </div>
