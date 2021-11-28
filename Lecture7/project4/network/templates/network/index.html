@@ -16,10 +16,42 @@
         </div>
     {% endif %}
 
-    <div id="posts">
+    {% for post in posts %}
+        <div class="card post">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h5><a href="/profile/{{post.user}}">{{post.user}}</a></h5>
+                        <p>{{post.post}}</p>
+                        <p>{{post.created}}</p>
+                        <button class="heart" onclick="clicked(this)" id="{{post.user}}{{post.id}}">&hearts;</button>
+                        <span>{{post.likes}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if posts.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ posts.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+            </span>
+    
+            {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}">next</a>
+                <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
     </div>
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'network/index.js' %}"></script>
+    <script src="{% static 'network/likes.js' %}"></script>
 {% endblock %}

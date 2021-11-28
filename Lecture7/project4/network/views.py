@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from operator import attrgetter
+from django.core.paginator import Paginator
 
 from .models import Post, Profile, User
 
@@ -18,7 +19,13 @@ def index(request):
         post.save()
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "network/index.html")
+        posts = Post.objects.all().order_by("-created").all()
+        paginator = Paginator(posts, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, "network/index.html", {
+            "posts": page_obj
+        })
 
 
 def login_view(request):
@@ -71,10 +78,6 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
-
-def all_posts(request):
-    posts = Post.objects.all().order_by("-created").all()
-    return JsonResponse([post.serialize() for post in posts], safe=False)
 
 @login_required(login_url=reverse_lazy("login"))
 def profile(request, username):
