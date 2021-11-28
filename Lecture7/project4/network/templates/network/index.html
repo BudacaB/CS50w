@@ -22,7 +22,17 @@
                 <div class="row">
                     <div class="col-12">
                         <h5><a href="/profile/{{post.user}}">{{post.user}}</a></h5>
-                        <p>{{post.post}}</p>
+                        {% if post.user == user %}
+                            <a href="javascript:void(0);" onclick="edit('{{ post.id }}')">Edit</a>
+                            <form action="{% url 'index' %}" method="post" id="form{{post.id}}" hidden>
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <textarea class="form-control" name="post">{{post.post}}</textarea>
+                                </div>
+                                <input class="btn btn-primary" type="button" value="Save">
+                            </form>
+                        {% endif %}
+                        <p id="post{{post.id}}">{{post.post}}</p>
                         <p>{{post.created}}</p>
                         <button class="heart" onclick="clicked(this)" id="{{post.user}}{{post.id}}">&hearts;</button>
                         <span>{{post.likes}}</span>
@@ -50,8 +60,10 @@
             {% endif %}
         </span>
     </div>
+
 {% endblock %}
 
 {% block script %}
     <script src="{% static 'network/likes.js' %}"></script>
+    <script src="{% static 'network/edit.js' %}"></script>
 {% endblock %}

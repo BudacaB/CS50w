@@ -87,6 +87,9 @@ def profile(request, username):
     following_count = user.following.count() 
     request_user = request.user == user
     user_posts = Post.objects.all().filter(user = user).order_by("-created").all()
+    paginator = Paginator(user_posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     if request.method == "POST":
         if request.POST['action'] == 'Follow':
             profile = Profile(follower = request.user, following = user)
@@ -102,7 +105,7 @@ def profile(request, username):
             "followers_count": followers_count,
             "following_count": following_count,
             "request_user": request_user,
-            "user_posts": user_posts,
+            "user_posts": page_obj,
             "following": following
         })
     else:
@@ -115,7 +118,7 @@ def profile(request, username):
             "followers_count": followers_count,
             "following_count": following_count,
             "request_user": request_user,
-            "user_posts": user_posts,
+            "user_posts": page_obj,
             "following": following
         })
 
@@ -127,6 +130,9 @@ def following(request):
         for post in Post.objects.all().filter(user = followed_user.following).order_by("-created").all():
             posts.append(post)
     posts.sort(key = attrgetter('created'), reverse = True)
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, "network/following.html", {
-        "posts": posts
+        "posts": page_obj
     })

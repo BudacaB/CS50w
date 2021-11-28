@@ -23,3 +23,8 @@
 .red_heart {
     color: red;
 }
+
+.pagination {
+    text-align: center;
+    display: block;
+}
