@@ -12,7 +12,7 @@ import json
 
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Post, Profile, User
+from .models import Likes, Post, Profile, User
 
 
 def index(request):
@@ -23,11 +23,16 @@ def index(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         posts = Post.objects.all().order_by("-created").all()
+        user_liked_posts = Likes.objects.filter(liked_by = request.user)
+        user_liked_posts_unpacked = set()
+        for post in user_liked_posts:
+            user_liked_posts_unpacked.add(post.post)
         paginator = Paginator(posts, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, "network/index.html", {
-            "posts": page_obj
+            "posts": page_obj,
+            "user_liked_posts": user_liked_posts_unpacked
         })
 
 
@@ -152,3 +157,15 @@ def update_post(request, postId):
     return JsonResponse({
         "updatedPost": updatedPost.post
     }, status=200)
+
+@csrf_exempt
+def like_post(request, postId, username):
+    user = User.objects.get(username = username)
+    post = Post.objects.get(pk=postId)
+    if (post.likes.count() == 0 or not Likes.objects.filter(post = post, liked_by = user)):
+        like = Likes(post = post, liked_by = user)
+        like.save()
+        return HttpResponse(status=200)
+    else:
+        like = Likes.objects.filter(post = post, liked_by = user).delete()
+        return HttpResponse(status=200)

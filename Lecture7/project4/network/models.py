@@ -15,7 +15,6 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     created = models.DateTimeField(auto_now_add=True)
     post = models.CharField(max_length=280)
-    likes = models.PositiveIntegerField(default=0)
 
     def serialize(self):
         return {
@@ -25,3 +24,7 @@ class Post(models.Model):
                 "post": self.post,
                 "likes": self.likes
             }
+
+class Likes(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
+    liked_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked_by")

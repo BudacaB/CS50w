@@ -42,8 +42,8 @@
                         {% endif %}
                         <p id="profilePost{{post.id}}">{{post.post}}</p>
                         <p>{{post.created}}</p>
-                        <button class="heart" onclick="clicked(this)" id="{{post.user}}{{post.id}}">&hearts;</button>
-                        <span>{{post.likes}}</span>
+                        <button class="heart" onclick="like(this, '{{ user }}', '{{ post.id }}')"" id="{{post.user}}{{post.id}}">&hearts;</button>
+                        <span>{{post.likes.count}}</span>
                     </div>
                 </div>
             </div>
@@ -72,6 +72,6 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'network/likes.js' %}"></script>
+    <script src="{% static 'network/like.js' %}"></script>
     <script src="{% static 'network/edit.js' %}"></script>
 {% endblock %}
