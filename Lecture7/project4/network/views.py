@@ -1,13 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from operator import attrgetter
 from django.core.paginator import Paginator
+import json
+
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Post, Profile, User
 
@@ -136,3 +139,16 @@ def following(request):
     return render(request, "network/following.html", {
         "posts": page_obj
     })
+
+@csrf_exempt
+def update_post(request, postId):
+    post = Post.objects.get(pk=postId)
+    data = json.loads(request.body)
+    updatedPost = data.get("post")
+    post.post = updatedPost
+    post.save()
+    updatedPost = Post.objects.get(pk=postId)
+    print(post.post)
+    return JsonResponse({
+        "updatedPost": updatedPost.post
+    }, status=200)

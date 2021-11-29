@@ -27,9 +27,9 @@
                             <form action="{% url 'index' %}" method="post" id="form{{post.id}}" hidden>
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <textarea class="form-control" name="post">{{post.post}}</textarea>
+                                    <textarea class="form-control" id="textarea{{post.id}}">{{post.post}}</textarea>
                                 </div>
-                                <input class="btn btn-primary" type="button" value="Save">
+                                <input class="btn btn-primary" onclick="saveEdit('{{ post.id }}')" type="button" value="Save">
                             </form>
                         {% endif %}
                         <p id="post{{post.id}}">{{post.post}}</p>
