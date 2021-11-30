@@ -23,7 +23,7 @@
                     <div class="col-12">
                         <h5><a href="/profile/{{post.user}}">{{post.user}}</a></h5>
                         {% if post.user == user %}
-                            <a href="javascript:void(0);" onclick="edit('{{ post.id }}')">Edit</a>
+                            <a href="javascript:void(0);" onclick="editIndex('{{ post.id }}')">Edit</a>
                             <form action="{% url 'index' %}" method="post" id="form{{post.id}}" hidden>
                                 {% csrf_token %}
                                 <div class="form-group">
@@ -34,12 +34,17 @@
                         {% endif %}
                         <p id="post{{post.id}}">{{post.post}}</p>
                         <p>{{post.created}}</p>
-                        {% if post in user_liked_posts %}
-                            <button class="heart red_heart" onclick="like(this, '{{ user }}', '{{ post.id }}')" id="{{post.user}}{{post.id}}">&hearts;</button>
+                        {% if user_not_logged_in %}
+                            <button class="heart" style="cursor: default;">&hearts;</button>
+                            <span>{{post.likes.count}}</span>
                         {% else %}
-                            <button class="heart" onclick="like(this, '{{ user }}', '{{ post.id }}')" id="{{post.user}}{{post.id}}">&hearts;</button>
-                        {% endif %}
+                            {% if post in user_liked_posts %}
+                            <button class="heart red_heart" onclick="like(this, '{{ user }}', '{{ post.id }}')" id="{{post.user}}{{post.id}}">&hearts;</button>
+                            {% else %}
+                                <button class="heart" onclick="like(this, '{{ user }}', '{{ post.id }}')" id="{{post.user}}{{post.id}}">&hearts;</button>
+                            {% endif %}
                             <span id="like{{post.id}}">{{post.likes.count}}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>

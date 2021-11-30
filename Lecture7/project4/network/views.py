@@ -23,16 +23,21 @@ def index(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         posts = Post.objects.all().order_by("-created").all()
-        user_liked_posts = Likes.objects.filter(liked_by = request.user)
-        user_liked_posts_unpacked = set()
-        for post in user_liked_posts:
-            user_liked_posts_unpacked.add(post.post)
+        user_not_logged_in = request.user.is_anonymous
+        if (user_not_logged_in):
+            user_liked_posts_unpacked = None
+        else:
+            user_liked_posts = Likes.objects.filter(liked_by = request.user)
+            user_liked_posts_unpacked = set()
+            for post in user_liked_posts:
+                user_liked_posts_unpacked.add(post.post)
         paginator = Paginator(posts, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, "network/index.html", {
             "posts": page_obj,
-            "user_liked_posts": user_liked_posts_unpacked
+            "user_liked_posts": user_liked_posts_unpacked,
+            "user_not_logged_in": user_not_logged_in
         })
 
 
@@ -98,6 +103,10 @@ def profile(request, username):
     paginator = Paginator(user_posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    user_liked_posts = Likes.objects.filter(liked_by = request.user)
+    user_liked_posts_unpacked = set()
+    for post in user_liked_posts:
+        user_liked_posts_unpacked.add(post.post)
     if request.method == "POST":
         if request.POST['action'] == 'Follow':
             profile = Profile(follower = request.user, following = user)
@@ -114,7 +123,8 @@ def profile(request, username):
             "following_count": following_count,
             "request_user": request_user,
             "user_posts": page_obj,
-            "following": following
+            "following": following,
+            "user_liked_posts": user_liked_posts_unpacked
         })
     else:
         if (not request_user and not Profile.objects.filter(follower = request.user, following = user)):
@@ -127,22 +137,27 @@ def profile(request, username):
             "following_count": following_count,
             "request_user": request_user,
             "user_posts": page_obj,
-            "following": following
+            "following": following,
+            "user_liked_posts": user_liked_posts_unpacked
         })
 
 def following(request):
     posts = list()
     following = request.user.following.all()
     for followed_user in following:
-        print(followed_user.following)
         for post in Post.objects.all().filter(user = followed_user.following).order_by("-created").all():
             posts.append(post)
     posts.sort(key = attrgetter('created'), reverse = True)
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    user_liked_posts = Likes.objects.filter(liked_by = request.user)
+    user_liked_posts_unpacked = set()
+    for post in user_liked_posts:
+        user_liked_posts_unpacked.add(post.post)
     return render(request, "network/following.html", {
-        "posts": page_obj
+        "posts": page_obj,
+        "user_liked_posts": user_liked_posts_unpacked
     })
 
 @csrf_exempt
@@ -153,7 +168,6 @@ def update_post(request, postId):
     post.post = updatedPost
     post.save()
     updatedPost = Post.objects.get(pk=postId)
-    print(post.post)
     return JsonResponse({
         "updatedPost": updatedPost.post
     }, status=200)

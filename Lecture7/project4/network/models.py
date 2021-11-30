@@ -26,5 +26,5 @@ class Post(models.Model):
             }
 
 class Likes(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
-    liked_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked_by")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", null=True)
+    liked_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked_by", null=True)

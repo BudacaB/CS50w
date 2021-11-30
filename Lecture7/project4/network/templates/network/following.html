@@ -13,8 +13,12 @@
                         <h5><a href="/profile/{{post.user}}">{{post.user}}</a></h5>
                         <p>{{post.post}}</p>
                         <p>{{post.created}}</p>
-                        <button class="heart" onclick="like(this, '{{ user }}', '{{ post.id }}')"" id="{{post.user}}{{post.id}}">&hearts;</button>
-                        <span>{{post.likes.count}}</span>
+                        {% if post in user_liked_posts %}
+                            <button class="heart red_heart" onclick="like(this, '{{ user }}', '{{ post.id }}')" id="{{post.user}}{{post.id}}">&hearts;</button>
+                        {% else %}
+                            <button class="heart" onclick="like(this, '{{ user }}', '{{ post.id }}')" id="{{post.user}}{{post.id}}">&hearts;</button>
+                        {% endif %}
+                        <span id="like{{post.id}}">{{post.likes.count}}</span>
                     </div>
                 </div>
             </div>
