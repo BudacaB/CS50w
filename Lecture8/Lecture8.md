@@ -47,3 +47,30 @@ https://cs50.harvard.edu/web/2020/notes/8/
 ### Autoscaling
 
 - sometimes a web app can have spikes in usage and would need more servers allocated, but dynamically, so they wouldn't also run when the usage is low, because that could get expensive
+- an autoscaler could dictate the number of servers in usage based on traffic - a min and max number of servers can be set -> this also does take time until the servers are up and running and can service requests
+- only one server could be a single point of failure (SPOF)
+- the load balancer can use a heartbeat request every some number of seconds to all servers, to figure out which servers are up and can service requests, their latency etc.
+- load balancers can be a SPOF as well, so some redundancy is needed
+
+### Scaling Databases
+
+- database partitioning - splitting up a big data set into multiple different parts to that data set
+    - vertical partitioning - splitting one table into multiple tables each of which ultimately have fewer columns that are able to represent data in a more relational way
+        - e.g. split a single 'flights' table which holds origin and destination airports and their codes, into an 'airports' table being referenced by the now smaller 'flights' table
+    - horizontal partitioning - splitting a table into multiple tables that are all storting effectively the same data but split up into different data sets
+        - e.g. split a single 'flights' table into 'flights_domestic' and 'flights_international', with the same columns, but helping make operations more efficient (with a more focused search for example) when dealing with multiple smaller tables
+        - one possible drawback is when we'd need to connect back this data ->  it's good to try and think about separating the data in such a way that generally we need to deal with one table or the other at any given time
+    - the database can still be a SPOF
+- database replication
+    - single-primary replication
+        - multiple databases, but one is considered to be the primary database - both READ and WRITE data
+        - the other replicas are used only for READS
+        - when the primary database changes - it needs to inform the other databases of that update to be kept in sync
+        - drawbacks - a single database carrying the WRITE load and this approach is also a slightly smaller version of the SPOF problem
+    - multi-primary replication
+        - all the databases can perform both READS and WRITES
+        - trade off is that the sync process is a bit trickier - any time a DB changes it needs to inform all the other DBs so it takes more time
+        - also introduces some complexitiy into the system and the possibility for conflicts
+            - editing similar data at the same time by different users - e.g. update conflict when two users want to edit the same row in the DB
+            - an uniqueness conflict - e.g. adding a new row in two different DBs that would get the same ID to both entries
+            - delete conflict - one user tries to delete a row and another user tries to update that row
