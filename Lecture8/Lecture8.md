@@ -158,6 +158,7 @@ https://cs50.harvard.edu/web/2020/notes/8/
         </a>
     </body>
     ```
+    - this will just run when loading the page and doesn't need to be clicked:
     ```
     <body>
         <img src="http://bank.com/transfer?to=hacker&amt=2000">
