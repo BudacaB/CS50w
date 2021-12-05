@@ -115,4 +115,20 @@ https://cs50.harvard.edu/web/2020/notes/8/
     - we don't want to send sensitive info in plaintext so that any node along the way can look at it - we'd want this info to be encryted
     - cryptography - encrypting a message so that someone in the middle won't be able to do the decryption
         - Secret-Key Cryptography
-            - plaintext + Key (some secret piece of info that can be used in order to encrypt or decrypt info)
+            - plaintext + Key (some secret piece of info that can be used in order to encrypt or decrypt info) -> ciphertext
+            - the receiver can use the key to decrypt the ciphertext to obtain the original plaintext
+            - this is called a symmetric key encryption and decryption key - the same key is used to both encrypt and decrypt messages
+            - downside is in the difficulty of passing the key to the other party securely
+        - Public-Key Cryptography
+            - both a Public Key (shared) and a Private Key (not shared) are used
+            - the Public Key will be used to encrypt info and the Private Key will be used to decrypt info
+            - the keys are mathematically related
+            - sender - plaintext + receiver's Public Key -> ciphertext
+            - receiver - ciphertext + Private Key -> plaintext
+- SQL
+    - passwords should be stored as hashed versions inside the database
+        - this uses a hash function - takes a password as input and outputs a hash - a sequence of numbers and characters that represents that particular password, a hashed version of the password
+        - the hash function is one way - very difficult to get the password from the hashed version - for example on auth the provided password is hashed again and compared with the value in the DB
+    - password reset pages shouldn't provide the info if a user exists for a provided email or not
+    - SQL injection
+
