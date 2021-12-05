@@ -130,5 +130,48 @@ https://cs50.harvard.edu/web/2020/notes/8/
         - this uses a hash function - takes a password as input and outputs a hash - a sequence of numbers and characters that represents that particular password, a hashed version of the password
         - the hash function is one way - very difficult to get the password from the hashed version - for example on auth the provided password is hashed again and compared with the value in the DB
     - password reset pages shouldn't provide the info if a user exists for a provided email or not
-    - SQL injection
+    - SQL injection - when running SQL code unwanted code could be executed, e.g. on auth for a query like
+    ```
+    SELECT * FROM users WHERE username = "harry" AND password = "12345";
+    ```
+    sending in the auth form no password and 'hacker";--' for username, the SQL query would look like
+    ```
+    SELECT * FROM users WHERE username = "harry";--" AND password = "";
+    ```
+    thus commenting out any filter for the password
+    - we need to make sure that we're escaping any such potential dangerous characters - Django's models to this for us for example or with writing an apps that runs specific queries, this check must be taken into account
+- APIs
+    - Rate Limiting - no user is able to make more than a certain number of requests to an API in any particular amount of time
+        - this is in response to a security threat that has to do with scalability of a system - DOS (Denial of Service) attack - too many requests to a server can potentially shut it down
+    - Route Authentication - a permission model to manage the data that users can access via an API
+        - for example an user might pass an API Key when they make a request to help verify their identity
+        - this is also a sensitive topic - the API Keys mustn't be stored inside of the source code of a web app for someone else to use it for particular API routes
+        - environment variables can be used for this - it won't be coded in the app but picked up from the env in which the app is running (from the server that hosts the app)
+- JavaScript
+    - Cross-Site Scripting - aside from the app's JS code, someone else could try running their JS code on the website to manipulate things towards a desired malicious goal
+        - this kind of code needs to be detected or escaped in some way
+    - Cross-Site Request Forgery - faking a request to a website when not actually intending to make a request to that website
+    ```
+    <body>
+        <a href="http://bank.com/transfer?to=hacker&amt=2000">
+            Click Here!
+        </a>
+    </body>
+    ```
+    ```
+    <body>
+        <img src="http://bank.com/transfer?to=hacker&amt=2000">
+    </body>
+    ```
+    - generally we only want POST requests to be able to manipulate something in the DB, but even then this is not perfectly secure:
+    ```
+    <body onload="document.forms[0].submit()">
+        <form action="http://bank.com/transfer" method="post">
+            <input type="hidden" name="to" value="hacker">
+            <input type="hidden" name="amt" value="2000">
+            <input type="submit" value="Click Here!">
+        </form>
+    </body>
+    ```
+    - Django allows us to add '{% csrf_token %}' to forms - regenerated every session - only if that token is present will the transfer be able to go through -> another site won't know the actual token
 
