@@ -2,5 +2,10 @@
 {% load static %}
 
 {% block body %}
-    <h2>Budget</h2>
+    <h2 id="utc" hidden>{{date}}</h2>
+    <h2 id="local_date"></h2>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'budget/index.js' %}"></script>
 {% endblock %}

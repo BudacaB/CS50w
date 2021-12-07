@@ -1,13 +1,18 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils.timezone import localtime
+from django.utils import timezone, dateformat
 
 from .models import User
 
 def index(request):
-    return render(request, "budget/index.html")
+    formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
+    return render(request, "budget/index.html", {
+        "date": formatted_date
+    })
 
 
 def login_view(request):
