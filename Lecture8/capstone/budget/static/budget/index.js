@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let utc = document.querySelector('#utc').innerHTML;
-    let localDate = new Date(`${utc} UTC`).toISOString().slice(0, 10);
-    document.querySelector('#local_date').innerHTML = localDate;
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let localDate = new Date();
+    document.querySelector('#local_date').innerHTML = localDate.getDate() + ' ' + monthNames[localDate.getMonth()] + ' ' + localDate.getFullYear();
 })

@@ -2,8 +2,71 @@
 {% load static %}
 
 {% block body %}
-    <h2 id="utc" hidden>{{date}}</h2>
-    <h2 id="local_date"></h2>
+    <h2 id="local_date" style="text-align: center;"></h2>
+    <br>
+    <h5 style="text-align: center;">Food: {{food}}%  &nbsp&nbsp  Bills: {{bills}}%  &nbsp&nbsp  Transport: {{transport}}%  &nbsp&nbsp  Fun: {{fun}}%</h5>
+    <br>
+
+    {% if user.is_authenticated %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <div>
+                        <h5>Food</h5>
+                        <form action="{% url 'index' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input class="form-control" type="number" step="0.01" min="0.01" name="food_expense" placeholder="Add your expense" required>
+                            </div>
+                            <input class="btn btn-primary" type="submit" value="Add">
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div>
+                        <h5>Bills</h5>
+                        <form action="{% url 'index' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input class="form-control" type="number" step="0.01" min="0.01" name="bills_expense" placeholder="Add your expense" required>
+                            </div>
+                            <input class="btn btn-primary" type="submit" value="Add">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-sm">
+                    <div>
+                        <h5>Transport</h5>
+                        <form action="{% url 'index' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input class="form-control" type="number" step="0.01" min="0.01" name="transport_expense" placeholder="Add your expense" required>
+                            </div>
+                            <input class="btn btn-primary" type="submit" value="Add">
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div>
+                        <h5>Fun</h5>
+                        <form action="{% url 'index' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input class="form-control" type="number" step="0.01" min="0.01" name="fun_expense" placeholder="Add your expense" required>
+                            </div>
+                            <input class="btn btn-primary" type="submit" value="Add">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <h2 style="text-align: center;">Login or Register to keep track of your expenses</h2>
+    {% endif %}
 {% endblock %}
 
 {% block script %}
