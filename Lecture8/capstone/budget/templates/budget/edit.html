@@ -9,7 +9,15 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-9">
-                        $ {{ expense.amount }}
+                        <span id="expense{{expense.id}}">$ {{ expense.amount }}</span> &nbsp&nbsp
+                        <a href="javascript:void(0);" onclick="editExpense('{{ expense.id }}', '{{expense_name}}')">Edit</a>
+                        <form action="{% url 'edit' expense_name expense.id %}" method="post" id="form{{expense.id}}" hidden>
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input class="form-control" id="input{{expense.id}}" type="number" step="0.01" min="0.01" name="fun_expense" value="{{expense.amount}}" required>
+                            </div>
+                            <input class="btn btn-primary" onclick="saveExpense('{{ expense.id }}', '{{expense_name}}')" type="button" value="Save">
+                        </form>
                     </div>
                     <div class="col-3">
                         {{ expense.created }}
@@ -20,4 +28,8 @@
         <br>
     {% endfor %}
 
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'budget/edit.js' %}"></script>
 {% endblock %}
