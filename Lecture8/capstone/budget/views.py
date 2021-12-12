@@ -93,16 +93,15 @@ def register(request):
 
 
 @login_required(login_url=reverse_lazy("login"))
-def edit(request, expenseType, expenseId):
-    # TODO fix date
+def edit(request, expenseType):
     if expenseType == "food":
-        expenses = Food.objects.filter(created = now().date(), user = request.user)
+        expenses = Food.objects.filter(created = request.GET.get('date'), user = request.user)
     elif expenseType == "bills":
-        expenses = Bill.objects.filter(created = now().date(), user = request.user)
+        expenses = Bill.objects.filter(created = request.GET.get('date'), user = request.user)
     elif expenseType == "transport":
-        expenses = Transport.objects.filter(created = now().date(), user = request.user)
+        expenses = Transport.objects.filter(created = request.GET.get('date'), user = request.user)
     elif expenseType == "fun":
-        expenses = Fun.objects.filter(created = now().date(), user = request.user)
+        expenses = Fun.objects.filter(created = request.GET.get('date'), user = request.user)
     return render(request, "budget/edit.html", {
         "expense_name": expenseType.title(),
         "expenses": expenses

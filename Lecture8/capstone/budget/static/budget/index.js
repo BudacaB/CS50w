@@ -1,20 +1,38 @@
 document.addEventListener('DOMContentLoaded', function() {
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let localDateOnLoad = new Date();
+    let localDateFormatted = localDateOnLoad.getFullYear() + '-' + (localDateOnLoad.getMonth() + 1) + '-' + localDateOnLoad.getDate();
     document.querySelector('#local_date').innerHTML = localDateOnLoad.getDate() + ' ' + monthNames[localDateOnLoad.getMonth()] + ' ' + localDateOnLoad.getFullYear();
-    document.querySelector('#food_date').value = localDateOnLoad.getFullYear() + '-' + (localDateOnLoad.getMonth() + 1) + '-' + localDateOnLoad.getDate();
-    document.querySelector('#bill_date').value = localDateOnLoad.getFullYear() + '-' + (localDateOnLoad.getMonth() + 1) + '-' + localDateOnLoad.getDate();
-    document.querySelector('#transport_date').value = localDateOnLoad.getFullYear() + '-' + (localDateOnLoad.getMonth() + 1) + '-' + localDateOnLoad.getDate();
-    document.querySelector('#fun_date').value = localDateOnLoad.getFullYear() + '-' + (localDateOnLoad.getMonth() + 1) + '-' + localDateOnLoad.getDate();
+    // set date for stats
+    document.querySelector('#food_date').value = localDateFormatted;
+    document.querySelector('#bill_date').value = localDateFormatted;
+    document.querySelector('#transport_date').value = localDateFormatted;
+    document.querySelector('#fun_date').value = localDateFormatted;
+    // set date for edits
+    let foodEditUrl = document.querySelector('#food_edit').href;
+    let billsEditUrl = document.querySelector('#bills_edit').href;
+    let transportEditUrl = document.querySelector('#transport_edit').href;
+    let funEditUrl = document.querySelector('#fun_edit').href;
+    document.querySelector('#food_edit').href = foodEditUrl + `?date=${localDateFormatted}`;
+    document.querySelector('#bills_edit').href = billsEditUrl + `?date=${localDateFormatted}`;
+    document.querySelector('#transport_edit').href = transportEditUrl + `?date=${localDateFormatted}`;
+    document.querySelector('#fun_edit').href = funEditUrl + `?date=${localDateFormatted}`;
     getPercentages();
     // keep updating the dates
     setInterval(function(){ 
         let localDateUpdated = new Date();
+        let localDateFormatted = localDateUpdated.getFullYear() + '-' + (localDateUpdated.getMonth() + 1) + '-' + localDateUpdated.getDate();
         document.querySelector('#local_date').innerHTML = localDateUpdated.getDate() + ' ' + monthNames[localDateUpdated.getMonth()] + ' ' + localDateUpdated.getFullYear();
-        document.querySelector('#food_date').value = localDateUpdated.getFullYear() + '-' + (localDateUpdated.getMonth() + 1) + '-' + localDateUpdated.getDate();
-        document.querySelector('#bill_date').value = localDateUpdated.getFullYear() + '-' + (localDateUpdated.getMonth() + 1) + '-' + localDateUpdated.getDate();
-        document.querySelector('#transport_date').value = localDateUpdated.getFullYear() + '-' + (localDateUpdated.getMonth() + 1) + '-' + localDateUpdated.getDate();
-        document.querySelector('#fun_date').value = localDateUpdated.getFullYear() + '-' + (localDateUpdated.getMonth() + 1) + '-' + localDateUpdated.getDate();
+        // set date for stats
+        document.querySelector('#food_date').value = localDateFormatted;
+        document.querySelector('#bill_date').value = localDateFormatted;
+        document.querySelector('#transport_date').value = localDateFormatted;
+        document.querySelector('#fun_date').value = localDateFormatted;
+        // set date for edits
+        document.querySelector('#food_edit').href = foodEditUrl + `?date=${localDateFormatted}`;
+        document.querySelector('#bills_edit').href = billsEditUrl + `?date=${localDateFormatted}`;
+        document.querySelector('#transport_edit').href = transportEditUrl + `?date=${localDateFormatted}`;
+        document.querySelector('#fun_edit').href = funEditUrl + `?date=${localDateFormatted}`;
         // refresh stats if page was opened since yesterday for example
         if (
             (localDateUpdated.getFullYear() + '-' + localDateUpdated.getMonth() + '-' + localDateUpdated.getDate()).localeCompare(

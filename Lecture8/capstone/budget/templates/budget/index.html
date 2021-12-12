@@ -6,10 +6,10 @@
     <br>
     {% if user.is_authenticated %}
         <h5 style="text-align: center;">
-            <a href="{% url 'edit' 'food' 0 %}">Food</a>: <span id="food_stats"></span>%  &nbsp&nbsp  
-            <a href="{% url 'edit' 'bills' 0 %}">Bills</a>: <span id="bills_stats"></span>%  &nbsp&nbsp  
-            <a href="{% url 'edit' 'transport' 0 %}">Transport</a>: <span id="transport_stats"></span>%  &nbsp&nbsp  
-            <a href="{% url 'edit' 'fun' 0 %}">Fun</a>: <span id="fun_stats"></span>%
+            <a href="{% url 'edit' 'food' %}" id="food_edit">Food</a>: <span id="food_stats"></span>%  &nbsp&nbsp  
+            <a href="{% url 'edit' 'bills' %}" id="bills_edit">Bills</a>: <span id="bills_stats"></span>%  &nbsp&nbsp  
+            <a href="{% url 'edit' 'transport' %}" id="transport_edit">Transport</a>: <span id="transport_stats"></span>%  &nbsp&nbsp  
+            <a href="{% url 'edit' 'fun' %}" id="fun_edit">Fun</a>: <span id="fun_stats"></span>%
         </h5>
         <br>
     {% endif %}
