@@ -1,0 +1,23 @@
+{% extends "budget/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h2 style="text-align: center;">Edit {{expense_name}}</h2>
+
+    {% for expense in expenses %}
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-9">
+                        $ {{ expense.amount }}
+                    </div>
+                    <div class="col-3">
+                        {{ expense.created }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+
+{% endblock %}

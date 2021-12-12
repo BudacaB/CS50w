@@ -4,7 +4,11 @@
 {% block body %}
     <h2 id="local_date" style="text-align: center;"></h2>
     <br>
-    <h5 style="text-align: center;">Food: {{food}}%  &nbsp&nbsp  Bills: {{bills}}%  &nbsp&nbsp  Transport: {{transport}}%  &nbsp&nbsp  Fun: {{fun}}%</h5>
+    <h5 style="text-align: center;">
+        <a href="{% url 'edit' 'food' %}">Food</a>: {{food}}%  &nbsp&nbsp  
+        <a href="{% url 'edit' 'bills' %}">Bills</a>: {{bills}}%  &nbsp&nbsp  
+        <a href="{% url 'edit' 'transport' %}">Transport</a>: {{transport}}%  &nbsp&nbsp  
+        <a href="{% url 'edit' 'fun' %}">Fun</a>: {{fun}}%</h5>
     <br>
 
     {% if user.is_authenticated %}
@@ -17,6 +21,7 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <input class="form-control" type="number" step="0.01" min="0.01" name="food_expense" placeholder="Add your expense" required>
+                                <input type="text" id="food_date" name="food_date" hidden>
                             </div>
                             <input class="btn btn-primary" type="submit" value="Add">
                         </form>
@@ -29,6 +34,7 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <input class="form-control" type="number" step="0.01" min="0.01" name="bills_expense" placeholder="Add your expense" required>
+                                <input type="text" id="bill_date" name="bill_date" hidden>
                             </div>
                             <input class="btn btn-primary" type="submit" value="Add">
                         </form>
@@ -44,6 +50,7 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <input class="form-control" type="number" step="0.01" min="0.01" name="transport_expense" placeholder="Add your expense" required>
+                                <input type="text" id="transport_date" name="transport_date" hidden>
                             </div>
                             <input class="btn btn-primary" type="submit" value="Add">
                         </form>
@@ -56,6 +63,7 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <input class="form-control" type="number" step="0.01" min="0.01" name="fun_expense" placeholder="Add your expense" required>
+                                <input type="text" id="fun_date" name="fun_date" hidden>
                             </div>
                             <input class="btn btn-primary" type="submit" value="Add">
                         </form>
