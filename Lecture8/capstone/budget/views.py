@@ -1,5 +1,3 @@
-from datetime import time
-from typing import Match
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
@@ -8,7 +6,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
+from django.http import JsonResponse
 
 from .models import Bill, Food, Fun, Transport, User
 
@@ -39,28 +37,7 @@ def index(request):
             expense.save()
             return HttpResponseRedirect(reverse("index"))
     else:
-        if request.user.is_anonymous:
-            return render(request, "budget/index.html")
-        else: 
-            food_expenses_today = Food.objects.filter(created = now().date(), user = request.user)
-            bills_expenses_today = Bill.objects.filter(created = now().date(), user = request.user)
-            transport_expenses_today = Transport.objects.filter(created = now().date(), user = request.user)
-            fun_expenses_today = Fun.objects.filter(created = now().date(), user = request.user)
-            food = get_expense_total(food_expenses_today)
-            bills = get_expense_total(bills_expenses_today)
-            transport = get_expense_total(transport_expenses_today)
-            fun = get_expense_total(fun_expenses_today)
-            total = food + bills + transport + fun
-            food_total_percentage = get_percentage(total, food)
-            bills_total_percentage = get_percentage(total, bills)
-            transport_total_percentage = get_percentage(total, transport)
-            fun_total_percentage = get_percentage(total, fun)
-            return render(request, "budget/index.html", {
-                "food": food_total_percentage,
-                "bills": bills_total_percentage,
-                "transport": transport_total_percentage,
-                "fun": fun_total_percentage
-            })
+        return render(request, "budget/index.html")
 
 
 def login_view(request):
@@ -114,6 +91,7 @@ def register(request):
     else:
         return render(request, "budget/register.html")
 
+
 @login_required(login_url=reverse_lazy("login"))
 def edit(request, expense):
     if expense == "food":
@@ -129,14 +107,46 @@ def edit(request, expense):
         "expenses": expenses
     })
 
+
 def get_expense_total(expenses):
     total = 0
     for expense in expenses:
         total = total + expense.amount
     return total
 
+
 def get_percentage(total, expense):
     if total is not 0:
         return "{:.2f}".format(expense / total * 100)
     else:
         return 0
+
+
+def stats(request, date):
+    if request.user.is_authenticated:
+        food_expenses_today = Food.objects.filter(created = date, user = request.user)
+        bills_expenses_today = Bill.objects.filter(created = date, user = request.user)
+        transport_expenses_today = Transport.objects.filter(created = date, user = request.user)
+        fun_expenses_today = Fun.objects.filter(created = date, user = request.user)
+        food = get_expense_total(food_expenses_today)
+        bills = get_expense_total(bills_expenses_today)
+        transport = get_expense_total(transport_expenses_today)
+        fun = get_expense_total(fun_expenses_today)
+        total = food + bills + transport + fun
+        food_total_percentage = get_percentage(total, food)
+        bills_total_percentage = get_percentage(total, bills)
+        transport_total_percentage = get_percentage(total, transport)
+        fun_total_percentage = get_percentage(total, fun)
+        return JsonResponse({
+            "food": food_total_percentage,
+            "bills": bills_total_percentage,
+            "transport": transport_total_percentage,
+            "fun": fun_total_percentage
+        }, status=200)
+    else:
+        return JsonResponse({
+            "food": 0,
+            "bills": 0,
+            "transport": 0,
+            "fun": 0
+        }, status=200)

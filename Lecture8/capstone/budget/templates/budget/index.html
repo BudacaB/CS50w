@@ -4,12 +4,15 @@
 {% block body %}
     <h2 id="local_date" style="text-align: center;"></h2>
     <br>
-    <h5 style="text-align: center;">
-        <a href="{% url 'edit' 'food' %}">Food</a>: {{food}}%  &nbsp&nbsp  
-        <a href="{% url 'edit' 'bills' %}">Bills</a>: {{bills}}%  &nbsp&nbsp  
-        <a href="{% url 'edit' 'transport' %}">Transport</a>: {{transport}}%  &nbsp&nbsp  
-        <a href="{% url 'edit' 'fun' %}">Fun</a>: {{fun}}%</h5>
-    <br>
+    {% if user.is_authenticated %}
+        <h5 style="text-align: center;">
+            <a href="{% url 'edit' 'food' %}">Food</a>: <span id="food_stats"></span>%  &nbsp&nbsp  
+            <a href="{% url 'edit' 'bills' %}">Bills</a>: <span id="bills_stats"></span>%  &nbsp&nbsp  
+            <a href="{% url 'edit' 'transport' %}">Transport</a>: <span id="transport_stats"></span>%  &nbsp&nbsp  
+            <a href="{% url 'edit' 'fun' %}">Fun</a>: <span id="fun_stats"></span>%
+        </h5>
+        <br>
+    {% endif %}
 
     {% if user.is_authenticated %}
         <div class="container">
