@@ -7,6 +7,8 @@ from django.utils.timezone import now
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Bill, Food, Fun, Transport, User
 
@@ -92,20 +94,47 @@ def register(request):
         return render(request, "budget/register.html")
 
 
+@csrf_exempt
 @login_required(login_url=reverse_lazy("login"))
 def edit(request, expenseType):
-    if expenseType == "food":
-        expenses = Food.objects.filter(created = request.GET.get('date'), user = request.user)
-    elif expenseType == "bills":
-        expenses = Bill.objects.filter(created = request.GET.get('date'), user = request.user)
-    elif expenseType == "transport":
-        expenses = Transport.objects.filter(created = request.GET.get('date'), user = request.user)
-    elif expenseType == "fun":
-        expenses = Fun.objects.filter(created = request.GET.get('date'), user = request.user)
-    return render(request, "budget/edit.html", {
-        "expense_name": expenseType.title(),
-        "expenses": expenses
-    })
+    if request.method == "PUT":
+        updated_amount = json.loads(request.body).get("amount")
+        if expenseType == "Food":
+            expense = Food.objects.get(pk=request.GET.get('id'))
+            expense.amount = updated_amount
+            expense.save()
+            updatedExpense = Food.objects.get(pk=request.GET.get('id'))
+        elif expenseType == "Bills":
+            expense = Bill.objects.get(pk=request.GET.get('id'))
+            expense.amount = updated_amount
+            expense.save()
+            updatedExpense = Bill.objects.get(pk=request.GET.get('id'))
+        elif expenseType == "Transport":
+            expense = Transport.objects.get(pk=request.GET.get('id'))
+            expense.amount = updated_amount
+            expense.save()
+            updatedExpense = Transport.objects.get(pk=request.GET.get('id'))
+        elif expenseType == "Fun":
+            expense = Fun.objects.get(pk=request.GET.get('id'))
+            expense.amount = updated_amount
+            expense.save()
+            updatedExpense = Fun.objects.get(pk=request.GET.get('id'))
+        return JsonResponse({
+            "updatedExpense": updatedExpense.amount
+        }, status=200)
+    else:
+        if expenseType == "food":
+            expenses = Food.objects.filter(created = request.GET.get('date'), user = request.user)
+        elif expenseType == "bills":
+            expenses = Bill.objects.filter(created = request.GET.get('date'), user = request.user)
+        elif expenseType == "transport":
+            expenses = Transport.objects.filter(created = request.GET.get('date'), user = request.user)
+        elif expenseType == "fun":
+            expenses = Fun.objects.filter(created = request.GET.get('date'), user = request.user)
+        return render(request, "budget/edit.html", {
+            "expense_name": expenseType.title(),
+            "expenses": expenses
+        })
 
 
 def get_expense_total(expenses):

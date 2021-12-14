@@ -4,29 +4,33 @@
 {% block body %}
     <h2 style="text-align: center;">Edit {{expense_name}} <span id="local_date"></span></h2>
 
-    {% for expense in expenses %}
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-9">
-                        <span id="expense{{expense.id}}">$ {{ expense.amount }}</span> &nbsp&nbsp
-                        <a href="javascript:void(0);" onclick="editExpense('{{ expense.id }}', '{{expense_name}}')">Edit</a>
-                        <form action="{% url 'edit' expense_name %}" method="post" id="form{{expense.id}}" hidden>
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <input class="form-control" id="input{{expense.id}}" type="number" step="0.01" min="0.01" name="fun_expense" value="{{expense.amount}}" required>
-                            </div>
-                            <input class="btn btn-primary" onclick="saveExpense('{{ expense.id }}', '{{expense_name}}')" type="button" value="Save">
-                        </form>
-                    </div>
-                    <div class="col-3">
-                        {{ expense.created }}
+    {% if expenses %}
+        {% for expense in expenses %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-9">
+                            <span id="expense{{expense.id}}">$ {{ expense.amount }}</span> &nbsp&nbsp
+                            <a href="javascript:void(0);" onclick="editExpense('{{ expense.id }}')">Edit</a>
+                            <form action="{% url 'edit' expense_name %}" method="post" id="form{{expense.id}}" hidden>
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input class="form-control" id="input{{expense.id}}" type="number" step="0.01" min="0.01" name="fun_expense" value="{{expense.amount}}" required>
+                                </div>
+                                <input class="btn btn-primary" onclick="saveExpense('{{ expense.id }}', '{{expense_name}}')" type="button" value="Save">
+                            </form>
+                        </div>
+                        <div class="col-3">
+                            {{ expense.created }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <br>
-    {% endfor %}
+            <br>
+        {% endfor %}
+    {% else %}
+        <h4>No expenses</h4>
+    {% endif %}
 
 {% endblock %}
 
