@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block body %}
-    <h2 style="text-align: center;">Edit {{expense_name}} <span id="local_date"></span></h2>
+    <h2 style="text-align: center;">Edit {{expense_name}} <span id="edit_date">{{date}}</span></h2>
 
     {% if expenses %}
         {% for expense in expenses %}
-            <div class="card">
+            <div class="card" id="card{{expense.id}}">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-9">
@@ -19,6 +19,7 @@
                                 </div>
                                 <input class="btn btn-primary" onclick="saveExpense('{{ expense.id }}', '{{expense_name}}')" type="button" value="Save">
                             </form>
+                            <a href="javascript:void(0);" onclick="deleteExpense('{{ expense.id }}', '{{expense_name}}')">Delete</a>
                         </div>
                         <div class="col-3">
                             {{ expense.created }}
@@ -26,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <br>
+            <br id="br{{expense.id}}">
         {% endfor %}
     {% else %}
         <h4>No expenses</h4>

@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 from .models import Bill, Food, Fun, Transport, User
 
@@ -100,28 +101,38 @@ def edit(request, expenseType):
     if request.method == "PUT":
         updated_amount = json.loads(request.body).get("amount")
         if expenseType == "Food":
-            expense = Food.objects.get(pk=request.GET.get('id'))
+            expense = Food.objects.get(pk=request.GET.get('id'), user = request.user)
             expense.amount = updated_amount
             expense.save()
-            updatedExpense = Food.objects.get(pk=request.GET.get('id'))
+            updatedExpense = Food.objects.get(pk=request.GET.get('id'), user = request.user)
         elif expenseType == "Bills":
-            expense = Bill.objects.get(pk=request.GET.get('id'))
+            expense = Bill.objects.get(pk=request.GET.get('id'), user = request.user)
             expense.amount = updated_amount
             expense.save()
-            updatedExpense = Bill.objects.get(pk=request.GET.get('id'))
+            updatedExpense = Bill.objects.get(pk=request.GET.get('id'), user = request.user)
         elif expenseType == "Transport":
-            expense = Transport.objects.get(pk=request.GET.get('id'))
+            expense = Transport.objects.get(pk=request.GET.get('id'), user = request.user)
             expense.amount = updated_amount
             expense.save()
-            updatedExpense = Transport.objects.get(pk=request.GET.get('id'))
+            updatedExpense = Transport.objects.get(pk=request.GET.get('id'), user = request.user)
         elif expenseType == "Fun":
-            expense = Fun.objects.get(pk=request.GET.get('id'))
+            expense = Fun.objects.get(pk=request.GET.get('id'), user = request.user)
             expense.amount = updated_amount
             expense.save()
-            updatedExpense = Fun.objects.get(pk=request.GET.get('id'))
+            updatedExpense = Fun.objects.get(pk=request.GET.get('id'), user = request.user)
         return JsonResponse({
             "updatedExpense": updatedExpense.amount
         }, status=200)
+    elif request.method == "DELETE":
+        if expenseType == "Food":
+            Food.objects.filter(pk=request.GET.get('id'), user = request.user).delete()
+        elif expenseType == "Bills":
+            Bill.objects.filter(pk=request.GET.get('id'), user = request.user).delete()
+        elif expenseType == "Transport":
+            Transport.objects.filter(pk=request.GET.get('id'), user = request.user).delete()
+        elif expenseType == "Fun":
+            Fun.objects.filter(pk=request.GET.get('id'), user = request.user).delete()
+        return HttpResponse(status=204)
     else:
         if expenseType == "food":
             expenses = Food.objects.filter(created = request.GET.get('date'), user = request.user)
@@ -133,7 +144,8 @@ def edit(request, expenseType):
             expenses = Fun.objects.filter(created = request.GET.get('date'), user = request.user)
         return render(request, "budget/edit.html", {
             "expense_name": expenseType.title(),
-            "expenses": expenses
+            "expenses": expenses,
+            "date": request.GET.get('date')
         })
 
 
