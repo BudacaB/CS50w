@@ -191,3 +191,10 @@ def stats(request, date):
             "transport": 0,
             "fun": 0
         }, status=200)
+
+
+def profile(request):
+    user = User.objects.get(pk=request.user.id)
+    return render(request, "budget/profile.html", {
+        "date_joined": user.date_joined
+    })

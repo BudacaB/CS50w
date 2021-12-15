@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let splitDate = document.querySelector('#edit_date').innerHTML.split('-')
-    console.log(parseInt(splitDate[1]))
     document.querySelector('#edit_date').innerHTML = splitDate[2] + ' ' + monthNames[parseInt(splitDate[1]) - 1] + ' ' + splitDate[0]
 })
 
