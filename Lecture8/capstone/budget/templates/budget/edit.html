@@ -12,7 +12,7 @@
                         <div class="col-9">
                             <span id="expense{{expense.id}}">$ {{ expense.amount }}</span> &nbsp&nbsp
                             <a href="javascript:void(0);" onclick="editExpense('{{ expense.id }}')">Edit</a>
-                            <form action="{% url 'edit' expense_name %}" method="post" id="form{{expense.id}}" hidden>
+                            <form id="form{{expense.id}}" hidden>
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <input class="form-control" id="input{{expense.id}}" type="number" step="0.01" min="0.01" name="fun_expense" value="{{expense.amount}}" required>

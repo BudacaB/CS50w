@@ -193,8 +193,15 @@ def stats(request, date):
         }, status=200)
 
 
+@csrf_exempt
+@login_required(login_url=reverse_lazy("login"))
 def profile(request):
-    user = User.objects.get(pk=request.user.id)
-    return render(request, "budget/profile.html", {
-        "date_joined": user.date_joined
-    })
+    if request.method == "DELETE":
+        user = User.objects.filter(pk=request.user.id).delete()
+        logout(request)
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        user = User.objects.get(pk=request.user.id)
+        return render(request, "budget/profile.html", {
+            "date_joined": user.date_joined
+        })

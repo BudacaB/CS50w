@@ -7,4 +7,12 @@
 
     <h4>Date joined: {{ date_joined }}</h4>
 
+    <form>
+        <input class="btn btn-danger" id="delete_account" type="submit" onclick="deleteAccount()" value="Delete account">
+    </form>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'budget/profile.js' %}"></script>
 {% endblock %}
