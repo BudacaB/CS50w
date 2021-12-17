@@ -4,7 +4,16 @@
 {% block body %}
     <h2 id="local_date" style="text-align: center;"></h2>
     <br>
-    <h5 style="text-align: center;">
+    <form id="date_form_day">
+        <div>Date: <input type="text" id="date_picker_day" onchange="getDateDay()">&nbsp<input class="btn btn-primary btn-sm" type="submit" onclick="changeDate()" value="Go"></div>
+    </form>
+    <form id="date_form_interval">
+        <div>Start: <input type="text" id="date_picker_start" onchange="getDateStart()">&nbsp
+        End: <input type="text" id="date_picker_end" onchange="getDateEnd()">&nbsp<input class="btn btn-primary btn-sm" type="submit" onclick="changeDate()" value="Go"></div>
+    </form>
+    
+    <br>
+    <h5 class="centered">
         <a href="{% url 'edit' 'food' %}" id="food_edit">Food</a>: <span id="food_stats"></span>%  &nbsp&nbsp  
         <a href="{% url 'edit' 'bills' %}" id="bills_edit">Bills</a>: <span id="bills_stats"></span>%  &nbsp&nbsp  
         <a href="{% url 'edit' 'transport' %}" id="transport_edit">Transport</a>: <span id="transport_stats"></span>%  &nbsp&nbsp  
@@ -24,7 +33,7 @@
                                 <input class="form-control" type="number" step="0.01" min="0.01" name="food_expense" placeholder="Add your expense" required>
                                 <input type="text" id="food_date" name="food_date" hidden>
                             </div>
-                            <input class="btn btn-primary" type="submit" value="Add">
+                            <input class="btn btn-primary btn-sm" type="submit" value="Add">
                         </form>
                     </div>
                 </div>
@@ -37,7 +46,7 @@
                                 <input class="form-control" type="number" step="0.01" min="0.01" name="bills_expense" placeholder="Add your expense" required>
                                 <input type="text" id="bill_date" name="bill_date" hidden>
                             </div>
-                            <input class="btn btn-primary" type="submit" value="Add">
+                            <input class="btn btn-primary btn-sm" type="submit" value="Add">
                         </form>
                     </div>
                 </div>
@@ -53,7 +62,7 @@
                                 <input class="form-control" type="number" step="0.01" min="0.01" name="transport_expense" placeholder="Add your expense" required>
                                 <input type="text" id="transport_date" name="transport_date" hidden>
                             </div>
-                            <input class="btn btn-primary" type="submit" value="Add">
+                            <input class="btn btn-primary btn-sm" type="submit" value="Add">
                         </form>
                     </div>
                 </div>
@@ -66,7 +75,7 @@
                                 <input class="form-control" type="number" step="0.01" min="0.01" name="fun_expense" placeholder="Add your expense" required>
                                 <input type="text" id="fun_date" name="fun_date" hidden>
                             </div>
-                            <input class="btn btn-primary" type="submit" value="Add">
+                            <input class="btn btn-primary btn-sm" type="submit" value="Add">
                         </form>
                     </div>
                 </div>
@@ -74,7 +83,7 @@
         </div>
 
     {% else %}
-        <h2 style="text-align: center;">Login or Register to keep track of your expenses</h2>
+        <h2 class="centered">Login or Register to keep track of your expenses</h2>
     {% endif %}
 {% endblock %}
 

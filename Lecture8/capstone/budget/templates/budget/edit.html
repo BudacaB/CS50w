@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body %}
-    <h2 style="text-align: center;">Edit {{expense_name}} <span id="edit_date">{{date}}</span></h2>
+    <h2 class="centered">Edit {{expense_name}} <span id="edit_date">{{date}}</span></h2>
 
     {% if expenses %}
         {% for expense in expenses %}

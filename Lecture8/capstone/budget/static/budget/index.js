@@ -42,6 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
             getPercentages();
         }
     }, 1000);
+
+    document.querySelector('#date_form_day').addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+
+    document.querySelector('#date_form_interval').addEventListener("click", function(event) {
+        event.preventDefault();
+    });
 })
 
 function getPercentages(){
@@ -56,3 +64,20 @@ function getPercentages(){
         document.querySelector('#fun_stats').innerHTML = result.fun;
     })
 }
+
+function getDateDay() {
+    console.log('day' + document.querySelector('#date_picker_day').value);
+}
+
+function getDateStart() {
+    console.log('start' + document.querySelector('#date_picker_start').value);
+}
+
+function getDateEnd() {
+    console.log('end' + document.querySelector('#date_picker_end').value);
+}
+
+function changeDate() {
+    console.log('test');
+}
+
