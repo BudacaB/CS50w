@@ -14,7 +14,9 @@
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
         <script>
         $( function() {
-          $( "#date_picker_day" ).datepicker();
+          $( "#date_picker_day" ).datepicker({
+            minDate: new Date(2007, 1 - 1, 1)
+            });
           $( "#date_picker_start" ).datepicker();
           $( "#date_picker_end" ).datepicker();
         } );

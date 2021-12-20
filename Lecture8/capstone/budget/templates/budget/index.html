@@ -5,7 +5,7 @@
     <h2 id="local_date" style="text-align: center;"></h2>
     <br>
     <form id="date_form_day">
-        <div>Date: <input type="text" id="date_picker_day" onchange="getDateDay()">&nbsp<input class="btn btn-primary btn-sm" type="submit" onclick="changeDate()" value="Go"></div>
+        <div>Date: <input type="text" id="date_picker_day" onchange="getDateDay()">&nbsp<input class="btn btn-primary btn-sm" id="day_go" type="submit" onclick="changeDate()" value="Go" disabled></div>
     </form>
     <form id="date_form_interval">
         <div>Start: <input type="text" id="date_picker_start" onchange="getDateStart()">&nbsp
@@ -27,13 +27,13 @@
                 <div class="col-sm">
                     <div>
                         <h5>Food</h5>
-                        <form action="{% url 'index' %}" method="post">
+                        <form>
                             {% csrf_token %}
                             <div class="form-group">
-                                <input class="form-control" type="number" step="0.01" min="0.01" name="food_expense" placeholder="Add your expense" required>
+                                <input class="form-control" type="number" step="0.01" min="0.01" id="food_expense" placeholder="Add your expense" required>
                                 <input type="text" id="food_date" name="food_date" hidden>
                             </div>
-                            <input class="btn btn-primary btn-sm" type="submit" value="Add">
+                            <input class="btn btn-primary btn-sm" onclick="addExpense(document.getElementById('food_expense').value, document.getElementById('food_date').value, 'food')" type="button" value="Add">
                         </form>
                     </div>
                 </div>

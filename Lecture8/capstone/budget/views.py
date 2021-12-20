@@ -13,32 +13,36 @@ from django.http import HttpResponse
 
 from .models import Bill, Food, Fun, Transport, User
 
+@csrf_exempt
 def index(request):
     if request.method == "POST":
-        if 'food_expense' in request.POST:      
-            expense_date = request.POST["food_date"]
-            expense_body = request.POST["food_expense"]
+        data = json.loads(request.body)
+        if data.get("type") == "food":   
+            expense_date = data.get("date")
+            expense_body = data.get("expense")
+            print(expense_date)
+            print(expense_body)
             expense = Food(user = request.user, amount = expense_body, created = expense_date)
             expense.save()
-            return HttpResponseRedirect(reverse("index"))
-        elif 'bills_expense' in request.POST:
-            expense_date = request.POST["bill_date"]
-            expense_body = request.POST["bills_expense"]
-            expense = Bill(user = request.user, amount = expense_body, created = expense_date)
-            expense.save()
-            return HttpResponseRedirect(reverse("index"))
-        elif 'transport_expense' in request.POST:
-            expense_date = request.POST["transport_date"]
-            expense_body = request.POST["transport_expense"]
-            expense = Transport(user = request.user, amount = expense_body, created = expense_date)
-            expense.save()
-            return HttpResponseRedirect(reverse("index"))
-        elif 'fun_expense' in request.POST:
-            expense_date = request.POST["fun_date"]
-            expense_body = request.POST["fun_expense"]
-            expense = Fun(user = request.user, amount = expense_body, created = expense_date)
-            expense.save()
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponse(status=201)
+        # elif 'bills_expense' in request.POST:
+        #     expense_date = request.POST["bill_date"]
+        #     expense_body = request.POST["bills_expense"]
+        #     expense = Bill(user = request.user, amount = expense_body, created = expense_date)
+        #     expense.save()
+        #     return HttpResponseRedirect(reverse("index"))
+        # elif 'transport_expense' in request.POST:
+        #     expense_date = request.POST["transport_date"]
+        #     expense_body = request.POST["transport_expense"]
+        #     expense = Transport(user = request.user, amount = expense_body, created = expense_date)
+        #     expense.save()
+        #     return HttpResponseRedirect(reverse("index"))
+        # elif 'fun_expense' in request.POST:
+        #     expense_date = request.POST["fun_date"]
+        #     expense_body = request.POST["fun_expense"]
+        #     expense = Fun(user = request.user, amount = expense_body, created = expense_date)
+        #     expense.save()
+        #     return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "budget/index.html")
 

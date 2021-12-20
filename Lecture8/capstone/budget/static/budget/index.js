@@ -60,6 +60,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 })
 
+function addExpense(expense, date, expenseType) {
+    console.log(expense);
+    console.log(date);
+    console.log(expenseType);
+    if (expenseType == 'food') {
+        fetch('/', {
+            method: 'POST',
+            body: JSON.stringify({
+                type: expenseType,
+                expense: parseInt(expense),
+                date: date
+            })
+        })
+        .then(response => console.log(response))
+        .catch(error => console.log('Error', error));
+        getPercentages(date);
+    }
+}
+
 function getPercentages(date){
     let formattedLocalDate;
     if (date == null) {
@@ -79,7 +98,13 @@ function getPercentages(date){
 }
 
 function getDateDay() {
-    return document.querySelector('#date_picker_day').value;
+    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (regex.test(document.querySelector('#date_picker_day').value)) {
+        document.querySelector('#day_go').removeAttribute("disabled", "");
+        return document.querySelector('#date_picker_day').value;
+    } else {
+        document.querySelector('#day_go').setAttribute("disabled", "");
+    } 
 }
 
 function getDateStart() {
