@@ -1,5 +1,12 @@
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+let dateRefresh = null;
+let foodEditUrl;
+let billsEditUrl;
+let transportEditUrl;
+let funEditUrl;
+
 document.addEventListener('DOMContentLoaded', function() {
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let localDateOnLoad = new Date();
     let localDateFormatted = localDateOnLoad.getFullYear() + '-' + (localDateOnLoad.getMonth() + 1) + '-' + localDateOnLoad.getDate();
     document.querySelector('#local_date').innerHTML = localDateOnLoad.getDate() + ' ' + monthNames[localDateOnLoad.getMonth()] + ' ' + localDateOnLoad.getFullYear();
@@ -9,17 +16,17 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#transport_date').value = localDateFormatted;
     document.querySelector('#fun_date').value = localDateFormatted;
     // set date for edits
-    let foodEditUrl = document.querySelector('#food_edit').href;
-    let billsEditUrl = document.querySelector('#bills_edit').href;
-    let transportEditUrl = document.querySelector('#transport_edit').href;
-    let funEditUrl = document.querySelector('#fun_edit').href;
+    foodEditUrl = document.querySelector('#food_edit').href;
+    billsEditUrl = document.querySelector('#bills_edit').href;
+    transportEditUrl = document.querySelector('#transport_edit').href;
+    funEditUrl = document.querySelector('#fun_edit').href;
     document.querySelector('#food_edit').href = foodEditUrl + `?date=${localDateFormatted}`;
     document.querySelector('#bills_edit').href = billsEditUrl + `?date=${localDateFormatted}`;
     document.querySelector('#transport_edit').href = transportEditUrl + `?date=${localDateFormatted}`;
     document.querySelector('#fun_edit').href = funEditUrl + `?date=${localDateFormatted}`;
     getPercentages();
     // keep updating the dates
-    setInterval(function(){ 
+    dateRefresh = setInterval(function(){ 
         let localDateUpdated = new Date();
         let localDateFormatted = localDateUpdated.getFullYear() + '-' + (localDateUpdated.getMonth() + 1) + '-' + localDateUpdated.getDate();
         document.querySelector('#local_date').innerHTML = localDateUpdated.getDate() + ' ' + monthNames[localDateUpdated.getMonth()] + ' ' + localDateUpdated.getFullYear();
@@ -39,9 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 localDateOnLoad.getFullYear() + '-' + localDateOnLoad.getMonth() + '-' + localDateOnLoad.getDate()
             ) != 0
         ) {
-            getPercentages();
+            getPercentages(null);
         }
     }, 1000);
+    dateRefresh;
 
     document.querySelector('#date_form_day').addEventListener("click", function(event) {
         event.preventDefault();
@@ -52,9 +60,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 })
 
-function getPercentages(){
-    let localDate = new Date();
-    let formattedLocalDate = localDate.getFullYear() + '-' + (localDate.getMonth() + 1) + '-' + localDate.getDate();
+function getPercentages(date){
+    let formattedLocalDate;
+    if (date == null) {
+        let localDate = new Date();
+        formattedLocalDate = localDate.getFullYear() + '-' + (localDate.getMonth() + 1) + '-' + localDate.getDate();
+    } else {
+        formattedLocalDate = date;
+    }
     fetch(`/stats/${formattedLocalDate}`)
     .then(response => response.json())
     .then(result => {
@@ -66,18 +79,34 @@ function getPercentages(){
 }
 
 function getDateDay() {
-    console.log('day' + document.querySelector('#date_picker_day').value);
+    return document.querySelector('#date_picker_day').value;
 }
 
 function getDateStart() {
-    console.log('start' + document.querySelector('#date_picker_start').value);
+    return document.querySelector('#date_picker_start').value;
 }
 
 function getDateEnd() {
-    console.log('end' + document.querySelector('#date_picker_end').value);
+    return document.querySelector('#date_picker_end').value;
 }
 
 function changeDate() {
-    console.log('test');
+    clearInterval(dateRefresh);
+    const date = getDateDay();
+    const splitDate = date.split('/');
+    const formattedDate = splitDate[2] + '-' + splitDate[0] + '-' + splitDate[1];
+    const headerFormattedDate = splitDate[1] + ' ' + monthNames[(splitDate[0] - 1)] + ' ' + splitDate[2];
+    document.querySelector('#local_date').innerHTML = headerFormattedDate;
+    // set date for stats
+    document.querySelector('#food_date').value = formattedDate;
+    document.querySelector('#bill_date').value = formattedDate;
+    document.querySelector('#transport_date').value = formattedDate;
+    document.querySelector('#fun_date').value = formattedDate;
+    // set date for edits
+    document.querySelector('#food_edit').href = foodEditUrl + `?date=${formattedDate}`;
+    document.querySelector('#bills_edit').href = billsEditUrl + `?date=${formattedDate}`;
+    document.querySelector('#transport_edit').href = transportEditUrl + `?date=${formattedDate}`;
+    document.querySelector('#fun_edit').href = funEditUrl + `?date=${formattedDate}`;
+    getPercentages(formattedDate);
 }
 

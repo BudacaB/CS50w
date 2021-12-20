@@ -165,14 +165,14 @@ def get_percentage(total, expense):
 
 def stats(request, date):
     if request.user.is_authenticated:
-        food_expenses_today = Food.objects.filter(created = date, user = request.user)
-        bills_expenses_today = Bill.objects.filter(created = date, user = request.user)
-        transport_expenses_today = Transport.objects.filter(created = date, user = request.user)
-        fun_expenses_today = Fun.objects.filter(created = date, user = request.user)
-        food = get_expense_total(food_expenses_today)
-        bills = get_expense_total(bills_expenses_today)
-        transport = get_expense_total(transport_expenses_today)
-        fun = get_expense_total(fun_expenses_today)
+        food_expenses = Food.objects.filter(created = date, user = request.user)
+        bills_expenses = Bill.objects.filter(created = date, user = request.user)
+        transport_expenses = Transport.objects.filter(created = date, user = request.user)
+        fun_expenses = Fun.objects.filter(created = date, user = request.user)
+        food = get_expense_total(food_expenses)
+        bills = get_expense_total(bills_expenses)
+        transport = get_expense_total(transport_expenses)
+        fun = get_expense_total(fun_expenses)
         total = food + bills + transport + fun
         food_total_percentage = get_percentage(total, food)
         bills_total_percentage = get_percentage(total, bills)
