@@ -3,7 +3,6 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils.timezone import now
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -201,3 +200,27 @@ def profile(request):
         return render(request, "budget/profile.html", {
             "date_joined": user.date_joined
         })
+
+
+@csrf_exempt
+@login_required(login_url=reverse_lazy("login"))
+def get_range(request):
+    food_expenses = Food.objects.filter(created__range=[request.GET.get('start'), request.GET.get('end')], user = request.user)
+    bills_expenses = Bill.objects.filter(created__range=[request.GET.get('start'), request.GET.get('end')], user = request.user)
+    transport_expenses = Transport.objects.filter(created__range=[request.GET.get('start'), request.GET.get('end')], user = request.user)
+    fun_expenses = Fun.objects.filter(created__range=[request.GET.get('start'), request.GET.get('end')], user = request.user)
+    food = get_expense_total(food_expenses)
+    bills = get_expense_total(bills_expenses)
+    transport = get_expense_total(transport_expenses)
+    fun = get_expense_total(fun_expenses)
+    total = food + bills + transport + fun
+    food_total_percentage = get_percentage(total, food)
+    bills_total_percentage = get_percentage(total, bills)
+    transport_total_percentage = get_percentage(total, transport)
+    fun_total_percentage = get_percentage(total, fun)
+    return JsonResponse({
+        "food": food_total_percentage,
+        "bills": bills_total_percentage,
+        "transport": transport_total_percentage,
+        "fun": fun_total_percentage
+    }, status=200)

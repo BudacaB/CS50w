@@ -102,12 +102,35 @@ function getDateDay() {
     } 
 }
 
-function getDateStart() {
-    return document.querySelector('#date_picker_start').value;
+function getDateRange() {
+    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (regex.test(document.querySelector('#date_picker_start').value) &&
+        regex.test(document.querySelector('#date_picker_end').value)) {
+        document.querySelector('#interval_go').removeAttribute("disabled", "");
+        return document.querySelector('#date_picker_start').value + '-' + document.querySelector('#date_picker_end').value;
+    } else {
+        document.querySelector('#interval_go').setAttribute("disabled", "");
+    } 
 }
 
-function getDateEnd() {
-    return document.querySelector('#date_picker_end').value;
+function useDateRange() {
+    clearInterval(dateRefresh);
+    const dateRange = getDateRange();
+    const startDateRaw = dateRange.split('-')[0].split('/');
+    const endDateRaw = dateRange.split('-')[1].split('/');
+    const startDate = startDateRaw[2] + '-' + startDateRaw[0] + '-' + startDateRaw[1];
+    const endDate = endDateRaw[2] + '-' + endDateRaw[0] + '-' + endDateRaw[1];
+    const headerFormattedDate = startDateRaw[1] + ' ' + monthNames[(startDateRaw[0] - 1)] + ' ' + startDateRaw[2] + ' - ' + endDateRaw[1] + ' ' + monthNames[(endDateRaw[0] - 1)] + ' ' + endDateRaw[2];
+    document.querySelector('#local_date').innerHTML = headerFormattedDate;
+    document.querySelector('#expenses_input').style.display = 'none';
+    fetch(`/range?start=${startDate}&end=${endDate}`)
+    .then(response => response.json())
+    .then(result => {
+        document.querySelector('#food_stats').innerHTML = result.food;
+        document.querySelector('#bills_stats').innerHTML = result.bills;
+        document.querySelector('#transport_stats').innerHTML = result.transport;
+        document.querySelector('#fun_stats').innerHTML = result.fun;
+    })
 }
 
 function changeDate() {

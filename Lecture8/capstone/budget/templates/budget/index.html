@@ -4,14 +4,16 @@
 {% block body %}
     <h2 id="local_date" style="text-align: center;"></h2>
     <br>
-    <form id="date_form_day">
-        <div>Date: <input type="text" id="date_picker_day" onchange="getDateDay()">&nbsp<input class="btn btn-primary btn-sm" id="day_go" type="submit" onclick="changeDate()" value="Go" disabled></div>
-    </form>
-    <form id="date_form_interval">
-        <div>Start: <input type="text" id="date_picker_start" onchange="getDateStart()">&nbsp
-        End: <input type="text" id="date_picker_end" onchange="getDateEnd()">&nbsp<input class="btn btn-primary btn-sm" type="submit" onclick="changeDate()" value="Go"></div>
-    </form>
-    
+    {% if user.is_authenticated %}
+        <form id="date_form_day">
+            <div>Date: <input type="text" id="date_picker_day" onchange="getDateDay()">&nbsp<input class="btn btn-primary btn-sm" id="day_go" type="submit" onclick="changeDate()" value="Go" disabled>&nbsp<input class="btn btn-primary btn-sm" type="submit" value="Clear" disabled></div>
+        </form>
+        <br>
+        <form id="date_form_interval">
+            <div>Start: <input type="text" id="date_picker_start" onchange="getDateRange()">&nbsp
+            End: <input type="text" id="date_picker_end" onchange="getDateRange()">&nbsp<input class="btn btn-primary btn-sm" id="interval_go" type="submit" onclick="useDateRange()" value="Go" disabled>&nbsp<input class="btn btn-primary btn-sm" type="submit" value="Clear" disabled></div>
+        </form>
+    {% endif %}
     <br>
     <h5 class="centered">
         <a href="{% url 'edit' 'food' %}" id="food_edit">Food</a>: <span id="food_stats"></span>%  &nbsp&nbsp  
@@ -22,7 +24,7 @@
     <br>
 
     {% if user.is_authenticated %}
-        <div class="container">
+        <div class="container" id="expenses_input">
             <div class="row">
                 <div class="col-sm">
                     <div>
