@@ -61,22 +61,17 @@ document.addEventListener('DOMContentLoaded', function() {
 })
 
 function addExpense(expense, date, expenseType) {
-    console.log(expense);
-    console.log(date);
-    console.log(expenseType);
-    if (expenseType == 'food') {
-        fetch('/', {
-            method: 'POST',
-            body: JSON.stringify({
-                type: expenseType,
-                expense: parseInt(expense),
-                date: date
-            })
+    fetch('/', {
+        method: 'POST',
+        body: JSON.stringify({
+            type: expenseType,
+            expense: parseInt(expense),
+            date: date
         })
-        .then(response => console.log(response))
-        .catch(error => console.log('Error', error));
-        getPercentages(date);
-    }
+    })
+    .then(response => getPercentages(date))
+    .catch(error => console.log('Error', error));
+    document.querySelector(`#${expenseType}_expense`).value = '';
 }
 
 function getPercentages(date){

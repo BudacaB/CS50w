@@ -17,32 +17,24 @@ from .models import Bill, Food, Fun, Transport, User
 def index(request):
     if request.method == "POST":
         data = json.loads(request.body)
+        expense_date = data.get("date")
+        expense = data.get("expense")
         if data.get("type") == "food":   
-            expense_date = data.get("date")
-            expense_body = data.get("expense")
-            print(expense_date)
-            print(expense_body)
-            expense = Food(user = request.user, amount = expense_body, created = expense_date)
+            expense = Food(user = request.user, amount = expense, created = expense_date)
             expense.save()
             return HttpResponse(status=201)
-        # elif 'bills_expense' in request.POST:
-        #     expense_date = request.POST["bill_date"]
-        #     expense_body = request.POST["bills_expense"]
-        #     expense = Bill(user = request.user, amount = expense_body, created = expense_date)
-        #     expense.save()
-        #     return HttpResponseRedirect(reverse("index"))
-        # elif 'transport_expense' in request.POST:
-        #     expense_date = request.POST["transport_date"]
-        #     expense_body = request.POST["transport_expense"]
-        #     expense = Transport(user = request.user, amount = expense_body, created = expense_date)
-        #     expense.save()
-        #     return HttpResponseRedirect(reverse("index"))
-        # elif 'fun_expense' in request.POST:
-        #     expense_date = request.POST["fun_date"]
-        #     expense_body = request.POST["fun_expense"]
-        #     expense = Fun(user = request.user, amount = expense_body, created = expense_date)
-        #     expense.save()
-        #     return HttpResponseRedirect(reverse("index"))
+        elif data.get("type") == "bills":
+            expense = Bill(user = request.user, amount = expense, created = expense_date)
+            expense.save()
+            return HttpResponse(status=201)
+        elif data.get("type") == "transport":
+            expense = Transport(user = request.user, amount = expense, created = expense_date)
+            expense.save()
+            return HttpResponse(status=201)
+        elif data.get("type") == "fun":
+            expense = Fun(user = request.user, amount = expense, created = expense_date)
+            expense.save()
+            return HttpResponse(status=201)
     else:
         return render(request, "budget/index.html")
 

@@ -31,7 +31,7 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <input class="form-control" type="number" step="0.01" min="0.01" id="food_expense" placeholder="Add your expense" required>
-                                <input type="text" id="food_date" name="food_date" hidden>
+                                <input type="text" id="food_date" hidden>
                             </div>
                             <input class="btn btn-primary btn-sm" onclick="addExpense(document.getElementById('food_expense').value, document.getElementById('food_date').value, 'food')" type="button" value="Add">
                         </form>
@@ -43,10 +43,10 @@
                         <form action="{% url 'index' %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
-                                <input class="form-control" type="number" step="0.01" min="0.01" name="bills_expense" placeholder="Add your expense" required>
-                                <input type="text" id="bill_date" name="bill_date" hidden>
+                                <input class="form-control" type="number" step="0.01" min="0.01" id="bills_expense" placeholder="Add your expense" required>
+                                <input type="text" id="bill_date" hidden>
                             </div>
-                            <input class="btn btn-primary btn-sm" type="submit" value="Add">
+                            <input class="btn btn-primary btn-sm" onclick="addExpense(document.getElementById('bills_expense').value, document.getElementById('bill_date').value, 'bills')" type="button" value="Add">
                         </form>
                     </div>
                 </div>
@@ -59,10 +59,10 @@
                         <form action="{% url 'index' %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
-                                <input class="form-control" type="number" step="0.01" min="0.01" name="transport_expense" placeholder="Add your expense" required>
-                                <input type="text" id="transport_date" name="transport_date" hidden>
+                                <input class="form-control" type="number" step="0.01" min="0.01" id="transport_expense" placeholder="Add your expense" required>
+                                <input type="text" id="transport_date" hidden>
                             </div>
-                            <input class="btn btn-primary btn-sm" type="submit" value="Add">
+                            <input class="btn btn-primary btn-sm" onclick="addExpense(document.getElementById('transport_expense').value, document.getElementById('transport_date').value, 'transport')" type="button" value="Add">
                         </form>
                     </div>
                 </div>
@@ -72,10 +72,10 @@
                         <form action="{% url 'index' %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
-                                <input class="form-control" type="number" step="0.01" min="0.01" name="fun_expense" placeholder="Add your expense" required>
-                                <input type="text" id="fun_date" name="fun_date" hidden>
+                                <input class="form-control" type="number" step="0.01" min="0.01" id="fun_expense" placeholder="Add your expense" required>
+                                <input type="text" id="fun_date" hidden>
                             </div>
-                            <input class="btn btn-primary btn-sm" type="submit" value="Add">
+                            <input class="btn btn-primary btn-sm" onclick="addExpense(document.getElementById('fun_expense').value, document.getElementById('fun_date').value, 'fun')" type="button" value="Add">
                         </form>
                     </div>
                 </div>
