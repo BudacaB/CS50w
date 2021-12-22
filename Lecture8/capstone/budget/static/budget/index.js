@@ -86,10 +86,12 @@ function getAmountsAndPercentages(date){
     fetch(`/stats/${formattedLocalDate}`)
     .then(response => response.json())
     .then(result => {
+        let total = result.food + result.bills + result.transport + result.fun;
         document.querySelector('#food_stats').innerHTML = `$${result.food.toFixed(2)} | ${result.food_stats}%`;
         document.querySelector('#bills_stats').innerHTML = `$${result.bills.toFixed(2)} | ${result.bills_stats}%`;
         document.querySelector('#transport_stats').innerHTML = `$${result.transport.toFixed(2)} | ${result.transport_stats}%`;
         document.querySelector('#fun_stats').innerHTML = `$${result.fun.toFixed(2)} | ${result.fun_stats}%`;
+        document.querySelector('#total').innerHTML = `Total: $ ${total.toFixed(2)}`;
     })
 }
 
