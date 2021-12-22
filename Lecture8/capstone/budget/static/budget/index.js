@@ -115,6 +115,7 @@ function getDateRange() {
 
 function useDateRange() {
     clearInterval(dateRefresh);
+    document.querySelector('#date_picker_day').value = '';
     const dateRange = getDateRange();
     const startDateRaw = dateRange.split('-')[0].split('/');
     const endDateRaw = dateRange.split('-')[1].split('/');
@@ -135,6 +136,8 @@ function useDateRange() {
 
 function changeDate() {
     clearInterval(dateRefresh);
+    document.querySelector('#date_picker_start').value = '';
+    document.querySelector('#date_picker_end').value = '';
     const date = getDateDay();
     const splitDate = date.split('/');
     const formattedDate = splitDate[2] + '-' + splitDate[0] + '-' + splitDate[1];

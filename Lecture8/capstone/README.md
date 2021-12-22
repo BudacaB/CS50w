@@ -72,8 +72,8 @@
 ## How to run
 
 - in the terminal, cd into the 'capstone' directory
-- run python manage.py makemigrations
-- run python manage.py migrate
+- run 'python manage.py migrate --run-syncdb'
+- run 'python manage.py runserver'
 - (no Python packages added)
 
 ## Additional information
