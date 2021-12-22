@@ -76,7 +76,7 @@ function addExpense(expense, date, expenseType) {
 
 function getPercentages(date){
     let formattedLocalDate;
-    if (date == null) {
+    if (date == null || date === '') {
         let localDate = new Date();
         formattedLocalDate = localDate.getFullYear() + '-' + (localDate.getMonth() + 1) + '-' + localDate.getDate();
     } else {
@@ -164,3 +164,11 @@ function resetAndReload() {
     }));
 }
 
+function refresh() {
+    const date = getDateDay();
+    if (typeof date !== 'undefined') {
+        const splitDate = date.split('/');
+        const formattedDate = splitDate[2] + '-' + splitDate[0] + '-' + splitDate[1];
+        getPercentages(formattedDate);
+    }
+}
