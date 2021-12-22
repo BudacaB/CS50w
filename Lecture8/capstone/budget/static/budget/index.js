@@ -137,10 +137,12 @@ function useDateRange() {
     fetch(`/range?start=${startDate}&end=${endDate}`)
     .then(response => response.json())
     .then(result => {
+        let total = result.food + result.bills + result.transport + result.fun;
         document.querySelector('#food_stats').innerHTML = `$${result.food} | ${result.food_stats}%`;
         document.querySelector('#bills_stats').innerHTML = `$${result.bills} | ${result.bills_stats}%`;
         document.querySelector('#transport_stats').innerHTML = `$${result.transport} | ${result.transport_stats}%`;
         document.querySelector('#fun_stats').innerHTML = `$${result.fun} | ${result.fun_stats}%`;
+        document.querySelector('#total').innerHTML = `Total: $ ${total.toFixed(2)}`;
     })
 }
 
