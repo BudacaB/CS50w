@@ -25,7 +25,7 @@
             - getting and displaying the expenses information
             - code to update the date every second and refresh the expenses information (e.g. if the day changes then there shouldn't be any expenses displayed if not introduced yet)
         - 'addExpense()': code for adding a new expense
-        - 'getPercentages()': code used for retrieving the expenses information
+        - 'getAmountsAndPercentages()': code used for retrieving the expenses information
         - 'getDateDay()': code used for getting and validating the date selected by the user
         - 'getDateRange()': code used for getting and validating the date range selected by the user 
         - 'useDateRange()': code used to retrieve the expenses information based on the date range selected and arrange the UI to display it ; this also removes editing capabilities which work only for the selected day

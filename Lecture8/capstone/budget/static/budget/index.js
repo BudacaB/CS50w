@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#bills_edit').href = billsEditUrl + `?date=${localDateFormatted}`;
     document.querySelector('#transport_edit').href = transportEditUrl + `?date=${localDateFormatted}`;
     document.querySelector('#fun_edit').href = funEditUrl + `?date=${localDateFormatted}`;
-    getPercentages();
+    getAmountsAndPercentages();
     // keep updating the dates
     dateRefresh = setInterval(function(){ 
         let localDateUpdated = new Date();
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 localDateOnLoad.getFullYear() + '-' + localDateOnLoad.getMonth() + '-' + localDateOnLoad.getDate()
             ) != 0
         ) {
-            getPercentages(null);
+            getAmountsAndPercentages(null);
         }
     }, 1000);
     dateRefresh;
@@ -66,16 +66,16 @@ function addExpense(expense, date, expenseType) {
         method: 'POST',
         body: JSON.stringify({
             type: expenseType,
-            expense: parseInt(expense),
+            expense: expense,
             date: date
         })
     })
-    .then(response => getPercentages(date))
+    .then(response => getAmountsAndPercentages(date))
     .catch(error => console.log('Error', error));
     document.querySelector(`#${expenseType}_expense`).value = '';
 }
 
-function getPercentages(date){
+function getAmountsAndPercentages(date){
     let formattedLocalDate;
     if (date == null || date === '') {
         let localDate = new Date();
@@ -86,10 +86,10 @@ function getPercentages(date){
     fetch(`/stats/${formattedLocalDate}`)
     .then(response => response.json())
     .then(result => {
-        document.querySelector('#food_stats').innerHTML = `$${result.food} | ${result.food_stats}%`;
-        document.querySelector('#bills_stats').innerHTML = `$${result.bills} | ${result.bills_stats}%`;
-        document.querySelector('#transport_stats').innerHTML = `$${result.transport} | ${result.transport_stats}%`;
-        document.querySelector('#fun_stats').innerHTML = `$${result.fun} | ${result.fun_stats}%`;
+        document.querySelector('#food_stats').innerHTML = `$${result.food.toFixed(2)} | ${result.food_stats}%`;
+        document.querySelector('#bills_stats').innerHTML = `$${result.bills.toFixed(2)} | ${result.bills_stats}%`;
+        document.querySelector('#transport_stats').innerHTML = `$${result.transport.toFixed(2)} | ${result.transport_stats}%`;
+        document.querySelector('#fun_stats').innerHTML = `$${result.fun.toFixed(2)} | ${result.fun_stats}%`;
     })
 }
 
@@ -162,7 +162,7 @@ function changeDate() {
     document.querySelector('#bills_edit').href = billsEditUrl + `?date=${formattedDate}`;
     document.querySelector('#transport_edit').href = transportEditUrl + `?date=${formattedDate}`;
     document.querySelector('#fun_edit').href = funEditUrl + `?date=${formattedDate}`;
-    getPercentages(formattedDate);
+    getAmountsAndPercentages(formattedDate);
 }
 
 function resetAndReload() {
@@ -182,5 +182,5 @@ function refresh() {
     monthNames
     const dateSplit = document.querySelector('#local_date').innerHTML.split(' ');
     const formattedDate = dateSplit[2] + '-' + (monthNames.indexOf(dateSplit[1]) + 1) + '-' + dateSplit[0];
-    getPercentages(formattedDate);
+    getAmountsAndPercentages(formattedDate);
 }

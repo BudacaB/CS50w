@@ -19,7 +19,7 @@ function saveExpense(expenseId, expenseName) {
       })
       .then(response => response.json())
       .then(result => {
-        document.querySelector(`#expense${expenseId}`).innerHTML = `$ ${result.updatedExpense}`;
+        document.querySelector(`#expense${expenseId}`).innerHTML = `$ ${result.updatedExpense.toFixed(2)}`;
         document.querySelector(`#expense${expenseId}`).style.display = 'block';
         document.querySelector(`#form${expenseId}`).hidden = true;
       })
@@ -38,3 +38,12 @@ function deleteExpense(expenseId, expenseName) {
       })
       .catch(error => console.log('Error', error));
 }
+
+// disabling 'enter' as it triggers strange csrf behavior when pressing it in the edit form input
+window.addEventListener('keydown',function(e){
+  if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){
+    if(e.target.nodeName=='INPUT'&&e.target.type=='number'){
+      e.preventDefault();return false;
+    }
+  }
+},true);
