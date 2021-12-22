@@ -116,6 +116,10 @@ function getDateRange() {
 function useDateRange() {
     clearInterval(dateRefresh);
     document.querySelector('#date_picker_day').value = '';
+    document.querySelector('#food_edit').removeAttribute('href');
+    document.querySelector('#bills_edit').removeAttribute('href');
+    document.querySelector('#transport_edit').removeAttribute('href');
+    document.querySelector('#fun_edit').removeAttribute('href');
     const dateRange = getDateRange();
     const startDateRaw = dateRange.split('-')[0].split('/');
     const endDateRaw = dateRange.split('-')[1].split('/');
