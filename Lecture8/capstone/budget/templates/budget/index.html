@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block body %}
+    {% if user.is_authenticated %}
     <h2 id="local_date" style="text-align: center;"></h2>
     <br>
-    {% if user.is_authenticated %}
         <form id="date_form_day">
             <div>Date: <input type="text" id="date_picker_day" onchange="getDateDay()">&nbsp<input class="btn btn-primary btn-sm" id="day_go" type="submit" onclick="changeDate()" value="Go" disabled>&nbsp<input class="btn btn-secondary btn-sm" onclick="resetAndReload()" type="submit" value="Clear"></div>
         </form>
