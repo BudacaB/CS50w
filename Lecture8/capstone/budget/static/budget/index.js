@@ -117,6 +117,7 @@ function getDateRange() {
 function useDateRange() {
     // not moving away from the selected dates
     clearInterval(dateRefresh);
+    document.querySelector('#refresh').hidden = true;
     document.querySelector('#date_picker_day').value = '';
     // remove editing capabilities for a range - works only for one day
     document.querySelector('#food_edit').removeAttribute('href');
@@ -169,6 +170,7 @@ function resetAndReload() {
     document.querySelector('#date_picker_day').value = '';
     document.querySelector('#date_picker_start').value = '';
     document.querySelector('#date_picker_end').value = '';
+    document.querySelector('#refresh').removeAttribute('hidden');
     // restarting the interval via triggering a DOMContentLoaded event
     window.document.dispatchEvent(new Event("DOMContentLoaded", {
         bubbles: true,
@@ -177,10 +179,8 @@ function resetAndReload() {
 }
 
 function refresh() {
-    const date = getDateDay();
-    if (typeof date !== 'undefined') {
-        const splitDate = date.split('/');
-        const formattedDate = splitDate[2] + '-' + splitDate[0] + '-' + splitDate[1];
-        getPercentages(formattedDate);
-    }
+    monthNames
+    const dateSplit = document.querySelector('#local_date').innerHTML.split(' ');
+    const formattedDate = dateSplit[2] + '-' + (monthNames.indexOf(dateSplit[1]) + 1) + '-' + dateSplit[0];
+    getPercentages(formattedDate);
 }

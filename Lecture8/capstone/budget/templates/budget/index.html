@@ -16,7 +16,7 @@
     {% endif %}
     <br>
     <h5 class="centered">
-        <input class="btn btn-info btn-sm" onclick="refresh()" type="submit" value="Refresh"> &nbsp
+        <input class="btn btn-info btn-sm" onclick="refresh()" id="refresh" type="submit" value="Refresh"> &nbsp
         <a href="{% url 'edit' 'food' %}" id="food_edit">Food</a>: <span id="food_stats"></span>  &nbsp&nbsp  
         <a href="{% url 'edit' 'bills' %}" id="bills_edit">Bills</a>: <span id="bills_stats"></span>  &nbsp&nbsp  
         <a href="{% url 'edit' 'transport' %}" id="transport_edit">Transport</a>: <span id="transport_stats"></span>  &nbsp&nbsp  
