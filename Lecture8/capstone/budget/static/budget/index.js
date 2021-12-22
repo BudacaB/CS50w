@@ -16,10 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#transport_date').value = localDateFormatted;
     document.querySelector('#fun_date').value = localDateFormatted;
     // set date for edits
-    foodEditUrl = document.querySelector('#food_edit').href;
-    billsEditUrl = document.querySelector('#bills_edit').href;
-    transportEditUrl = document.querySelector('#transport_edit').href;
-    funEditUrl = document.querySelector('#fun_edit').href;
+    // making sure to reset the values with 'split' because 'resetAndReload()' might append multiple dates on repeat calling
+    foodEditUrl = document.querySelector('#food_edit').href.split('?')[0];
+    billsEditUrl = document.querySelector('#bills_edit').href.split('?')[0];
+    transportEditUrl = document.querySelector('#transport_edit').href.split('?')[0];
+    funEditUrl = document.querySelector('#fun_edit').href.split('?')[0];
     document.querySelector('#food_edit').href = foodEditUrl + `?date=${localDateFormatted}`;
     document.querySelector('#bills_edit').href = billsEditUrl + `?date=${localDateFormatted}`;
     document.querySelector('#transport_edit').href = transportEditUrl + `?date=${localDateFormatted}`;
@@ -114,6 +115,7 @@ function getDateRange() {
 }
 
 function useDateRange() {
+    // not moving away from the selected dates
     clearInterval(dateRefresh);
     document.querySelector('#date_picker_day').value = '';
     // remove editing capabilities for a range - works only for one day
@@ -140,6 +142,7 @@ function useDateRange() {
 }
 
 function changeDate() {
+    // not moving away from the selected date
     clearInterval(dateRefresh);
     document.querySelector('#date_picker_start').value = '';
     document.querySelector('#date_picker_end').value = '';
@@ -166,6 +169,7 @@ function resetAndReload() {
     document.querySelector('#date_picker_day').value = '';
     document.querySelector('#date_picker_start').value = '';
     document.querySelector('#date_picker_end').value = '';
+    // restarting the interval via triggering a DOMContentLoaded event
     window.document.dispatchEvent(new Event("DOMContentLoaded", {
         bubbles: true,
         cancelable: true
