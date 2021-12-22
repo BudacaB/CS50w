@@ -1,3 +1,5 @@
+# Budget App
+
 ## Distinctiveness and Complexity
 
 - The idea for my project is a budget application, i.e. distinct from a social network application or an e-commerce application
