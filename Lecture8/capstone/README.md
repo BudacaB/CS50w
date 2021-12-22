@@ -13,7 +13,7 @@
 
 ## Files and contents
 
-- JavaScript:
+- ### JavaScript:
     - edit.js:
         - on 'DOMContentLoaded': code used for displaying the date of the day being viewed for editing
         - 'editExpense()': code used for arraning the UI for editing individual expenses
@@ -34,10 +34,10 @@
     - profile.js:
         - 'deleteAccount()': code used for deleting a user and all its data
 
-- CSS: 
+- ### CSS: 
     - styles.css: CSS code used for styling
 
-- HTML:
+- ### HTML:
     - edit.html: displaying the expenses for a particular date and expense and allowing edits and removals
     - index.html: main page, allowing the users to input expenses, view the expenses info for the current day, or for different dates and date ranges that can be selected
     - layout.html: skeleton HTML for navbar and stylesheets
@@ -45,7 +45,7 @@
     - register.html: register page
     - profile.html: page where the user can see the date when they joined and also delete the account if they want to remove it and all its data
 
-- Python (all are boilerplate but I will try to detail the contents of models.py, urls.py and views.py):
+- ### Python (all are boilerplate but I will try to detail the contents of models.py, urls.py and views.py):
     - models.py:
         - 'User(AbstractUser)': used for managing users and authentication
         - Four models with the same structure for the chosen categories: a user (foreign key to the 'user' table), the created date and the amount
