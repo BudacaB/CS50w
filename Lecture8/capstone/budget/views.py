@@ -158,7 +158,7 @@ def get_percentage(total, expense):
         return 0
 
 
-def stats(request, date):
+def get_stats(request, date):
     if request.user.is_authenticated:
         food_expenses = Food.objects.filter(created = date, user = request.user)
         bills_expenses = Bill.objects.filter(created = date, user = request.user)
@@ -174,10 +174,14 @@ def stats(request, date):
         transport_total_percentage = get_percentage(total, transport)
         fun_total_percentage = get_percentage(total, fun)
         return JsonResponse({
-            "food": food_total_percentage,
-            "bills": bills_total_percentage,
-            "transport": transport_total_percentage,
-            "fun": fun_total_percentage
+            "food_stats": food_total_percentage,
+            "bills_stats": bills_total_percentage,
+            "transport_stats": transport_total_percentage,
+            "fun_stats": fun_total_percentage,
+            "food": food,
+            "bills": bills,
+            "transport": transport,
+            "fun": fun
         }, status=200)
     else:
         return JsonResponse({
@@ -204,7 +208,7 @@ def profile(request):
 
 @csrf_exempt
 @login_required(login_url=reverse_lazy("login"))
-def get_range(request):
+def get_range_stats(request):
     food_expenses = Food.objects.filter(created__range=[request.GET.get('start'), request.GET.get('end')], user = request.user)
     bills_expenses = Bill.objects.filter(created__range=[request.GET.get('start'), request.GET.get('end')], user = request.user)
     transport_expenses = Transport.objects.filter(created__range=[request.GET.get('start'), request.GET.get('end')], user = request.user)
@@ -219,8 +223,12 @@ def get_range(request):
     transport_total_percentage = get_percentage(total, transport)
     fun_total_percentage = get_percentage(total, fun)
     return JsonResponse({
-        "food": food_total_percentage,
-        "bills": bills_total_percentage,
-        "transport": transport_total_percentage,
-        "fun": fun_total_percentage
+            "food_stats": food_total_percentage,
+            "bills_stats": bills_total_percentage,
+            "transport_stats": transport_total_percentage,
+            "fun_stats": fun_total_percentage,
+            "food": food,
+            "bills": bills,
+            "transport": transport,
+            "fun": fun
     }, status=200)

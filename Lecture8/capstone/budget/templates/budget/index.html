@@ -6,20 +6,21 @@
     <br>
     {% if user.is_authenticated %}
         <form id="date_form_day">
-            <div>Date: <input type="text" id="date_picker_day" onchange="getDateDay()">&nbsp<input class="btn btn-primary btn-sm" id="day_go" type="submit" onclick="changeDate()" value="Go" disabled>&nbsp<input class="btn btn-primary btn-sm" type="submit" value="Clear" disabled></div>
+            <div>Date: <input type="text" id="date_picker_day" onchange="getDateDay()">&nbsp<input class="btn btn-primary btn-sm" id="day_go" type="submit" onclick="changeDate()" value="Go" disabled>&nbsp<input class="btn btn-secondary btn-sm" onclick="resetAndReload()" type="submit" value="Clear"></div>
         </form>
         <br>
         <form id="date_form_interval">
             <div>Start: <input type="text" id="date_picker_start" onchange="getDateRange()">&nbsp
-            End: <input type="text" id="date_picker_end" onchange="getDateRange()">&nbsp<input class="btn btn-primary btn-sm" id="interval_go" type="submit" onclick="useDateRange()" value="Go" disabled>&nbsp<input class="btn btn-primary btn-sm" type="submit" value="Clear" disabled></div>
+            End: <input type="text" id="date_picker_end" onchange="getDateRange()">&nbsp<input class="btn btn-primary btn-sm" id="interval_go" type="submit" onclick="useDateRange()" value="Go" disabled>&nbsp<input class="btn btn-secondary btn-sm" onclick="resetAndReload()" type="submit" value="Clear"></div>
         </form>
     {% endif %}
     <br>
     <h5 class="centered">
-        <a href="{% url 'edit' 'food' %}" id="food_edit">Food</a>: <span id="food_stats"></span>%  &nbsp&nbsp  
-        <a href="{% url 'edit' 'bills' %}" id="bills_edit">Bills</a>: <span id="bills_stats"></span>%  &nbsp&nbsp  
-        <a href="{% url 'edit' 'transport' %}" id="transport_edit">Transport</a>: <span id="transport_stats"></span>%  &nbsp&nbsp  
-        <a href="{% url 'edit' 'fun' %}" id="fun_edit">Fun</a>: <span id="fun_stats"></span>%
+        <input class="btn btn-info btn-sm" onclick="changeDate()" type="submit" value="Refresh"> &nbsp
+        <a href="{% url 'edit' 'food' %}" id="food_edit">Food</a>: <span id="food_stats"></span>  &nbsp&nbsp  
+        <a href="{% url 'edit' 'bills' %}" id="bills_edit">Bills</a>: <span id="bills_stats"></span>  &nbsp&nbsp  
+        <a href="{% url 'edit' 'transport' %}" id="transport_edit">Transport</a>: <span id="transport_stats"></span>  &nbsp&nbsp  
+        <a href="{% url 'edit' 'fun' %}" id="fun_edit">Fun</a>: <span id="fun_stats"></span>
     </h5>
     <br>
 

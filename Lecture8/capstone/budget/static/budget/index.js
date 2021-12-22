@@ -85,10 +85,10 @@ function getPercentages(date){
     fetch(`/stats/${formattedLocalDate}`)
     .then(response => response.json())
     .then(result => {
-        document.querySelector('#food_stats').innerHTML = result.food;
-        document.querySelector('#bills_stats').innerHTML = result.bills;
-        document.querySelector('#transport_stats').innerHTML = result.transport;
-        document.querySelector('#fun_stats').innerHTML = result.fun;
+        document.querySelector('#food_stats').innerHTML = `$${result.food} | ${result.food_stats}%`;
+        document.querySelector('#bills_stats').innerHTML = `$${result.bills} | ${result.bills_stats}%`;
+        document.querySelector('#transport_stats').innerHTML = `$${result.transport} | ${result.transport_stats}%`;
+        document.querySelector('#fun_stats').innerHTML = `$${result.fun} | ${result.fun_stats}%`;
     })
 }
 
@@ -126,10 +126,10 @@ function useDateRange() {
     fetch(`/range?start=${startDate}&end=${endDate}`)
     .then(response => response.json())
     .then(result => {
-        document.querySelector('#food_stats').innerHTML = result.food;
-        document.querySelector('#bills_stats').innerHTML = result.bills;
-        document.querySelector('#transport_stats').innerHTML = result.transport;
-        document.querySelector('#fun_stats').innerHTML = result.fun;
+        document.querySelector('#food_stats').innerHTML = `$${result.food} | ${result.food_stats}%`;
+        document.querySelector('#bills_stats').innerHTML = `$${result.bills} | ${result.bills_stats}%`;
+        document.querySelector('#transport_stats').innerHTML = `$${result.transport} | ${result.transport_stats}%`;
+        document.querySelector('#fun_stats').innerHTML = `$${result.fun} | ${result.fun_stats}%`;
     })
 }
 
@@ -151,5 +151,16 @@ function changeDate() {
     document.querySelector('#transport_edit').href = transportEditUrl + `?date=${formattedDate}`;
     document.querySelector('#fun_edit').href = funEditUrl + `?date=${formattedDate}`;
     getPercentages(formattedDate);
+}
+
+function resetAndReload() {
+    document.querySelector('#expenses_input').style.display = 'block';
+    document.querySelector('#date_picker_day').value = '';
+    document.querySelector('#date_picker_start').value = '';
+    document.querySelector('#date_picker_end').value = '';
+    window.document.dispatchEvent(new Event("DOMContentLoaded", {
+        bubbles: true,
+        cancelable: true
+    }));
 }
 
