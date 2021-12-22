@@ -28,9 +28,10 @@
         - 'getPercentages()': code used for retrieving the expenses information
         - 'getDateDay()': code used for getting and validating the date selected by the user
         - 'getDateRange()': code used for getting and validating the date range selected by the user 
-        - 'useDateRange()': code used to retrieve the expenses information based on the date range selected and arrange the UI to display it
+        - 'useDateRange()': code used to retrieve the expenses information based on the date range selected and arrange the UI to display it ; this also removes editing capabilities which work only for the selected day
         - 'changeDate()': code used to pass the selected date to the elements that use it and to retrieve and display the expenses information for this date
         - 'resetAndReload()': code for allowing the user to clear previous selections and start fresh
+        - 'refresh()': code for allowing a user to refresh the stats after editing expenses and returning to the stats page
     - profile.js:
         - 'deleteAccount()': code used for deleting a user and all its data
 

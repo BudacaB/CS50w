@@ -116,6 +116,7 @@ function getDateRange() {
 function useDateRange() {
     clearInterval(dateRefresh);
     document.querySelector('#date_picker_day').value = '';
+    // remove editing capabilities for a range - works only for one day
     document.querySelector('#food_edit').removeAttribute('href');
     document.querySelector('#bills_edit').removeAttribute('href');
     document.querySelector('#transport_edit').removeAttribute('href');
