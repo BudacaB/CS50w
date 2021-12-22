@@ -16,14 +16,14 @@
 - ### JavaScript:
     - edit.js:
         - on 'DOMContentLoaded': code used for displaying the date of the day being viewed for editing
-        - 'editExpense()': code used for arraning the UI for editing individual expenses
+        - 'editExpense()': code used for arranging the UI for editing individual expenses
         - 'saveExpense()': code used for sending the request to save the updated expense and rearrange the UI
         - 'deleteExpense()': code used for sending the request to delete an expense
     - index.js:
         - on 'DOMContentLoaded': 
             - code used for displaying the current date and attaching it to certain elements for subsequent requests
             - getting and displaying the expenses information
-            - code to update the date every second and refresh the expenses information (e.g. if the day changes then there should be no expenses until any are introduced)
+            - code to update the date every second and refresh the expenses information (e.g. if the day changes then there shouldn't be any expenses displayed if not introduced yet)
         - 'addExpense()': code for adding a new expense
         - 'getPercentages()': code used for retrieving the expenses information
         - 'getDateDay()': code used for getting and validating the date selected by the user
@@ -45,7 +45,7 @@
     - register.html: register page
     - profile.html: page where the user can see the date when they joined and also delete the account if they want to remove it and all its data
 
-- ### Python (all are boilerplate but I will try to detail the contents of models.py, urls.py and views.py):
+- ### Python:
     - models.py:
         - 'User(AbstractUser)': used for managing users and authentication
         - Four models with the same structure for the chosen categories: a user (foreign key to the 'user' table), the created date and the amount
